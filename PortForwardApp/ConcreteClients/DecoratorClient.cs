@@ -19,7 +19,7 @@ namespace PortForward
             _inner.Initialize(port);
         }
 
-        public override void Transmit(string message)
+        public override void Transmit(byte[] message)
         {
             Console.WriteLine("{0}: Some decorated pre Tx behaviour", _id);
             _inner.Transmit(message);

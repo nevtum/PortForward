@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PortForward
 {
@@ -9,7 +6,8 @@ namespace PortForward
     {
         public override void HandleRx(object sender, EventArgs e)
         {
-            string message = (string)sender;
+            byte[] bytes = (byte[])sender;
+            string message = PortForward.Utilities.ByteStringConverter.GetString(bytes);
             Console.WriteLine("Message received: {0}", message);
         }
     }

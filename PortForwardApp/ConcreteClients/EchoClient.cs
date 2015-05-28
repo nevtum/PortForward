@@ -6,7 +6,7 @@ namespace PortForward
     {
         public override void HandleRx(object sender, EventArgs e)
         {
-            string message = (string)sender;
+            byte[] message = (byte[])sender;
             Transmit(message);
         }
     }

@@ -15,7 +15,7 @@ namespace PortForward
             port.OnDataRecieved += HandleRx;
         }
 
-        public virtual void Transmit(string message)
+        public virtual void Transmit(byte[] message)
         {
             _port.Transmit(message);
         }

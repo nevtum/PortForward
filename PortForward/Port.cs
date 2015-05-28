@@ -4,7 +4,7 @@ namespace PortForward
 {
     public interface Transmittable
     {
-        void Transmit(string message);
+        void Transmit(byte[] message);
     }
 
     public interface Receivable
@@ -14,7 +14,7 @@ namespace PortForward
 
     public class Port : Transmittable, Receivable
     {
-        public void Transmit(string message)
+        public void Transmit(byte[] message)
         {
             OnDataTransmitted(message, EventArgs.Empty);
         }

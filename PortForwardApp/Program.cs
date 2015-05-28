@@ -1,4 +1,5 @@
 ﻿using PortForward;
+using PortForward.Utilities;
 using System;
 
 namespace PortForwardApp
@@ -17,7 +18,9 @@ namespace PortForwardApp
                 Console.WriteLine("write some text!");
                 string input = Console.ReadLine();
 
-                clientA.Transmit(input);
+                byte[] bytes = ByteStringConverter.GetBytes(input);
+
+                clientA.Transmit(bytes);
             }
         }
     }
