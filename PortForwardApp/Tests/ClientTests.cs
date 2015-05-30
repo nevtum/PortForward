@@ -22,7 +22,7 @@ namespace PortForwardApp.Tests
 
             clientA.Transmit(bytes);
 
-            Assert.AreEqual(data.Request, bytes);
+            Assert.AreEqual(bytes, data.Request);
             Assert.AreEqual(data.Response, data.Request);
             Assert.IsNotNull(data.Response);
         }
