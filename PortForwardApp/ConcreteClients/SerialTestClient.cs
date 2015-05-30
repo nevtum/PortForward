@@ -10,6 +10,7 @@ namespace PortForwardApp.ConcreteClients
     public class SerialTestClient : Client, IDisposable
     {
         private SerialPort _serialPort;
+        private Object _lockObj;
 
         public SerialTestClient(SerialSettings settings)
         {
@@ -19,18 +20,34 @@ namespace PortForwardApp.ConcreteClients
                 settings.DataBits,
                 settings.StopBits);
 
+            _lockObj = new Object();
+
             _serialPort.DataReceived += OnSerialDataReceived;
         }
 
         public override void HandleRx(object sender, EventArgs e)
         {
             byte[] bytes = (byte[])sender;
-            _serialPort.Write(bytes, 0, bytes.Length);
+
+            lock (_lockObj)
+            {
+                _serialPort.Write(bytes, 0, bytes.Length);
+            }
         }
 
         private void OnSerialDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            byte[] bytes = (byte[])sender;
+            byte[] bytes;
+
+            lock (_lockObj)
+            {
+                int size = _serialPort.BytesToRead;
+                bytes = new byte[size];
+                _serialPort.Read(bytes, 0, size);
+            }
+
+            System.Diagnostics.Debug.Assert(bytes != null);
+
             Transmit(bytes);
         }
 
