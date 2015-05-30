@@ -12,12 +12,12 @@ namespace PortForward
             _taskFactory = new TaskFactory();
         }
 
-        public override void Transmit(byte[] message)
+        public override void Push(byte[] message)
         {
-            _taskFactory.StartNew(() => base.Transmit(message));
+            _taskFactory.StartNew(() => base.Push(message));
         }
 
-        public override void HandleRx(object sender, EventArgs e)
+        public override void HandleResponse(object sender, EventArgs e)
         {
             byte[] bytes = (byte[])sender;
             string message = PortForward.Utilities.ByteStringConverter.GetString(bytes);

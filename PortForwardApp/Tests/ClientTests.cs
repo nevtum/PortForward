@@ -20,7 +20,7 @@ namespace PortForwardApp.Tests
 
             byte[] bytes = ByteStringConverter.GetBytes("Hello!");
 
-            clientA.Transmit(bytes);
+            clientA.Push(bytes);
 
             Assert.AreEqual(bytes, data.Request);
             Assert.AreEqual(data.Response, data.Request);
@@ -43,13 +43,13 @@ namespace PortForwardApp.Tests
             _data = data;
         }
 
-        public override void Transmit(byte[] message)
+        public override void Push(byte[] message)
         {
             _data.Request = message;
-            base.Transmit(message);
+            base.Push(message);
         }
 
-        public override void HandleRx(object sender, EventArgs e)
+        public override void HandleResponse(object sender, EventArgs e)
         {
             _data.Response = (byte[])sender;
         }

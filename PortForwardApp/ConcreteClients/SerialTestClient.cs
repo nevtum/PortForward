@@ -10,7 +10,7 @@ namespace PortForwardApp.ConcreteClients
     public class SerialTestClient : Client, IDisposable
     {
         private SerialPort _serialPort;
-        private Object _lockObj;
+        private Object _isIOBusy;
 
         public SerialTestClient(SerialSettings settings)
         {
@@ -20,16 +20,16 @@ namespace PortForwardApp.ConcreteClients
                 settings.DataBits,
                 settings.StopBits);
 
-            _lockObj = new Object();
+            _isIOBusy = new Object();
 
             _serialPort.DataReceived += OnSerialDataReceived;
         }
 
-        public override void HandleRx(object sender, EventArgs e)
+        public override void HandleResponse(object sender, EventArgs e)
         {
             byte[] bytes = (byte[])sender;
 
-            lock (_lockObj)
+            lock (_isIOBusy)
             {
                 _serialPort.Write(bytes, 0, bytes.Length);
             }
@@ -39,7 +39,7 @@ namespace PortForwardApp.ConcreteClients
         {
             byte[] bytes;
 
-            lock (_lockObj)
+            lock (_isIOBusy)
             {
                 int size = _serialPort.BytesToRead;
                 bytes = new byte[size];
@@ -48,7 +48,7 @@ namespace PortForwardApp.ConcreteClients
 
             System.Diagnostics.Debug.Assert(bytes != null);
 
-            Transmit(bytes);
+            Push(bytes);
         }
 
         void IDisposable.Dispose()

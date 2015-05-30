@@ -38,7 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConcreteClients\ConsoleClient.cs" />
-    <Compile Include="ConcreteClients\DecoratorClient.cs" />
     <Compile Include="ConcreteClients\EchoClient.cs" />
     <Compile Include="ConcreteClients\SerialSettings.cs" />
     <Compile Include="ConcreteClients\SerialTestClient.cs" />

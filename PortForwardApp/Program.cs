@@ -9,7 +9,7 @@ namespace PortForwardApp
         static void Main(string[] args)
         {
             Client clientA = new ConsoleClient();
-            Client clientB = new DecoratorClient(new EchoClient());
+            Client clientB = new EchoClient();
 
             Bridge bridge = new Bridge(clientA, clientB);
 
@@ -20,7 +20,7 @@ namespace PortForwardApp
 
                 byte[] bytes = ByteStringConverter.GetBytes(input);
 
-                clientA.Transmit(bytes);
+                clientA.Push(bytes);
             }
         }
     }
