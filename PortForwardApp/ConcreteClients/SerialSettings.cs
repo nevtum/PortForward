@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Ports;
 
 namespace PortForwardApp.ConcreteClients
 {
@@ -6,11 +7,11 @@ namespace PortForwardApp.ConcreteClients
     {
         public int BaudRate { get; set; }
 
-        public System.IO.Ports.Parity Parity { get; set; }
+        public Parity Parity { get; set; }
 
         public int DataBits { get; set; }
 
-        public System.IO.Ports.StopBits StopBits { get; set; }
+        public StopBits StopBits { get; set; }
 
         public string PortName { get; set; }
     }
