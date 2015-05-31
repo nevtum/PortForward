@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO.Ports;
 
-namespace PortForwardApp.ConcreteClients
+namespace PortForward
 {
     public class SerialSettings
     {

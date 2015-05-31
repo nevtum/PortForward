@@ -8,20 +8,34 @@ namespace PortForwardApp
     {
         static void Main(string[] args)
         {
-            Client clientA = new ConsoleClient();
-            Client clientB = new EchoClient();
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            Console.WriteLine("Please enter COM port nr: ");
+            int comPort = int.Parse(Console.ReadLine());
+
+            SerialSettings settings = new SerialSettings()
+            {
+                BaudRate = 9600,
+                PortName = string.Format("COM{0}", comPort),
+                Parity = System.IO.Ports.Parity.None,
+                StopBits = System.IO.Ports.StopBits.One,
+                DataBits = 8
+            };
+
+            Client clientA = new SerialTestClient(settings);
+            Client clientB = new ConsoleClient();
 
             Bridge bridge = new Bridge(clientA, clientB);
 
-            while (true)
-            {
-                Console.WriteLine("write some text!");
-                string input = Console.ReadLine();
+            Console.ReadLine(); // prevent application from exiting
+        }
 
-                byte[] bytes = ByteStringConverter.GetBytes(input);
-
-                clientA.Push(bytes);
-            }
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine(e.ExceptionObject.ToString());
+            Console.WriteLine("Press any key to exit!");
+            Console.ReadLine();
+            Environment.Exit(1);
         }
     }
 }

@@ -1,12 +1,8 @@
-﻿using PortForward;
-using System;
+﻿using System;
 using System.IO.Ports;
 
-namespace PortForwardApp.ConcreteClients
+namespace PortForward
 {
-    /// <summary>
-    /// Not tested yet
-    /// </summary>
     public class SerialTestClient : Client, IDisposable
     {
         private SerialPort _serialPort;
@@ -23,6 +19,14 @@ namespace PortForwardApp.ConcreteClients
             _isIOBusy = new Object();
 
             _serialPort.DataReceived += OnSerialDataReceived;
+        }
+
+        public override void Initialize(Port port)
+        {
+            base.Initialize(port);
+
+            if (_serialPort.IsOpen == false)
+                _serialPort.Open();
         }
 
         public override void HandleResponse(object sender, EventArgs e)
@@ -53,6 +57,9 @@ namespace PortForwardApp.ConcreteClients
 
         void IDisposable.Dispose()
         {
+            if (_serialPort.IsOpen == true)
+                _serialPort.Close();
+
             _serialPort.DataReceived -= OnSerialDataReceived;
         }
     }
