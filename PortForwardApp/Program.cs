@@ -23,7 +23,7 @@ namespace PortForwardApp
             };
 
             Client clientA = new SerialTestClient(settings);
-            Client clientB = new ConsoleClient();
+            Client clientB = new LoggingClient();
 
             Bridge bridge = new Bridge(clientA, clientB);
 
