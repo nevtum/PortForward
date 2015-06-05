@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortForward", "PortForward\PortForward.csproj", "{1B04C33D-678D-407F-B03C-8A37688B4821}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortForwardApp", "PortForwardApp\PortForwardApp.csproj", "{C0E18471-7EFE-4483-B342-EE942A946C64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortForward.NetworkBridge", "PortForward.NetworkBridge\PortForward.NetworkBridge.csproj", "{79D01909-8F89-4AB5-8F96-12FC17C9BF81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C0E18471-7EFE-4483-B342-EE942A946C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0E18471-7EFE-4483-B342-EE942A946C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0E18471-7EFE-4483-B342-EE942A946C64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D01909-8F89-4AB5-8F96-12FC17C9BF81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D01909-8F89-4AB5-8F96-12FC17C9BF81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D01909-8F89-4AB5-8F96-12FC17C9BF81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D01909-8F89-4AB5-8F96-12FC17C9BF81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

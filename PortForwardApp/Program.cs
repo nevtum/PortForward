@@ -1,4 +1,5 @@
 ﻿using PortForward;
+using PortForward.NetworkBridge;
 using PortForward.Utilities;
 using System;
 
@@ -10,6 +11,14 @@ namespace PortForwardApp
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            //RunSerialApp();
+            RunNetworkBridge();
+
+            Console.ReadLine(); // prevent application from exiting
+        }
+
+        private static void RunSerialApp()
+        {
             Console.WriteLine("Please enter COM port nr: ");
             int comPort = int.Parse(Console.ReadLine());
 
@@ -26,8 +35,21 @@ namespace PortForwardApp
             Client clientB = new LoggingClient();
 
             Bridge bridge = new Bridge(clientA, clientB);
+        }
 
-            Console.ReadLine(); // prevent application from exiting
+        private static void RunNetworkBridge()
+        {
+            Client clientA = new ConsoleClient();
+            Client clientB = new ZMQClient();
+
+            Bridge bridge = new Bridge(clientA, clientB);
+
+            while (true)
+            {
+                string input = Console.ReadLine();
+
+                clientA.Push(PortForward.Utilities.ByteStringConverter.GetBytes(input));
+            }
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
