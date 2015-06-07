@@ -7,19 +7,21 @@ namespace PortForward.NetworkBridge
 {
     public class ZMQClient : Client
     {
+        private NetMQContext _context;
         private NetMQSocket _pubSocket;
         private NetMQSocket _subSocket;
+        private string _topic = "raw-stream";
 
         public override void Initialize(Port port)
         {
             base.Initialize(port);
 
-            NetMQContext context = NetMQContext.Create();
-            _pubSocket = context.CreatePublisherSocket();
-            _subSocket = context.CreateSubscriberSocket();
+            _context = NetMQContext.Create();
+            _pubSocket = _context.CreatePublisherSocket();
+            _subSocket = _context.CreateSubscriberSocket();
 
-            _pubSocket.Bind("tcp://localhost:4040");
-            _subSocket.Bind("tcp://localhost:4041");
+            _pubSocket.Bind("tcp://*:4040");
+            _subSocket.Bind("tcp://*:4041");
 
             Task.Factory.StartNew(ListenerThread);
         }
@@ -27,7 +29,7 @@ namespace PortForward.NetworkBridge
         public override void HandleResponse(object sender, EventArgs e)
         {
             byte[] bytes = (byte[])sender;
-            _pubSocket.Send(bytes);
+            _pubSocket.SendMore(_topic).Send(bytes);
         }
 
         private void ListenerThread()
