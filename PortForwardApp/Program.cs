@@ -39,8 +39,11 @@ namespace PortForwardApp
 
         private static void RunNetworkBridge()
         {
+            Console.Write("Please enter publisher address: ");
+            string address = Console.ReadLine();
+
             Client clientA = new ConsoleClient();
-            Client clientB = new ZMQClient();
+            Client clientB = new ZMQClient(address);
 
             Bridge bridge = new Bridge(clientA, clientB);
 

@@ -11,18 +11,17 @@ namespace PortForward.NetworkBridge
         private NetMQSocket _pubSocket;
         private NetMQSocket _subSocket;
         private string _topic = "raw-stream";
+        private string _remote;
 
-        public override void Initialize(Port port)
+        public ZMQClient(string publisherAddress)
         {
-            base.Initialize(port);
-
+            _remote = string.Format("tcp://{0}:4040", publisherAddress);
+            
             _context = NetMQContext.Create();
             _pubSocket = _context.CreatePublisherSocket();
             _subSocket = _context.CreateSubscriberSocket();
 
             _pubSocket.Bind("tcp://*:4040");
-            _subSocket.Bind("tcp://*:4041");
-
             Task.Factory.StartNew(ListenerThread);
         }
 
@@ -34,12 +33,36 @@ namespace PortForward.NetworkBridge
 
         private void ListenerThread()
         {
+            int minReconnectDelay = 1;
+            int reconnectDelay = minReconnectDelay;
+            int maxReconnectDelay = 60;
+
             while (true)
             {
-                string response = _subSocket.ReceiveString();
-                byte[] bytes = ByteStringConverter.GetBytes(response);
+                try
+                {
+                    _subSocket.Bind(_remote);
+                    reconnectDelay = minReconnectDelay;
 
-                Push(bytes);
+                    while (true)
+                    {
+                        string response = _subSocket.ReceiveString();
+                        byte[] bytes = ByteStringConverter.GetBytes(response);
+
+                        Push(bytes);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Could not connect to remote publisher!");
+                    Console.WriteLine("Trying to re-connect in {0}s", reconnectDelay);
+                    System.Threading.Thread.Sleep(reconnectDelay * 1000);
+
+                    reconnectDelay *= 2;
+
+                    if (reconnectDelay > maxReconnectDelay)
+                        reconnectDelay = maxReconnectDelay;
+                }
             }
         }
     }
