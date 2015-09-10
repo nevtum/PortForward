@@ -28,7 +28,7 @@ namespace PortForward.NetworkBridge
         public override void HandleResponse(object sender, EventArgs e)
         {
             byte[] bytes = (byte[])sender;
-            _pubSocket.SendMore(_topic).Send(bytes);
+            _pubSocket.SendMore(_topic).Send(bytes, bytes.Length, dontWait: true);
         }
 
         private void ListenerThread()
@@ -41,7 +41,8 @@ namespace PortForward.NetworkBridge
             {
                 try
                 {
-                    _subSocket.Bind(_remote);
+                    _subSocket.Connect(_remote);
+                    _subSocket.Subscribe(_topic);
                     reconnectDelay = minReconnectDelay;
 
                     while (true)
