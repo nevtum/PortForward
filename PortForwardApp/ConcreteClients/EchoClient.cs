@@ -4,10 +4,9 @@ namespace PortForward
 {
     public class EchoClient : Client
     {
-        public override void HandleResponse(object sender, EventArgs e)
+        public override void HandleResponse(byte[] data)
         {
-            byte[] message = (byte[])sender;
-            Push(message);
+            Push(data);
         }
     }
 }

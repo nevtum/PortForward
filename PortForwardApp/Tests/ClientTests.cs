@@ -43,15 +43,15 @@ namespace PortForwardApp.Tests
             _data = data;
         }
 
-        public override void Push(byte[] message)
+        public override void Push(byte[] data)
         {
-            _data.Request = message;
-            base.Push(message);
+            _data.Request = data;
+            base.Push(data);
         }
 
-        public override void HandleResponse(object sender, EventArgs e)
+        public override void HandleResponse(byte[] data)
         {
-            _data.Response = (byte[])sender;
+            _data.Response = data;
         }
     }
 

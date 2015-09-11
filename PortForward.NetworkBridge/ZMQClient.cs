@@ -25,10 +25,9 @@ namespace PortForward.NetworkBridge
             Task.Factory.StartNew(ListenerThread);
         }
 
-        public override void HandleResponse(object sender, EventArgs e)
+        public override void HandleResponse(byte[] data)
         {
-            byte[] bytes = (byte[])sender;
-            _pubSocket.SendMore(_topic).Send(bytes, bytes.Length, dontWait: true);
+            _pubSocket.SendMore(_topic).Send(data, data.Length, dontWait: true);
         }
 
         private void ListenerThread()

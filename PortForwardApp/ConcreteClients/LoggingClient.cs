@@ -5,24 +5,23 @@ namespace PortForward
 {
     public class LoggingClient : Client
     {
-        public override void Push(byte[] message)
+        public override void Push(byte[] data)
         {
-            string messageString = BitConverter.ToString(message);
-            Console.WriteLine("Tx: {0}", messageString);
+            string message = BitConverter.ToString(data);
+            Console.WriteLine("Tx: {0}", message);
 
             using (StreamWriter w = File.AppendText("log.txt"))
             {
-                string msg = string.Format("[Tx] {0}: {1}", DateTime.Now, messageString);
+                string msg = string.Format("[Tx] {0}: {1}", DateTime.Now, message);
                 w.WriteLine(msg);
             }
 
-            base.Push(message);
+            base.Push(data);
         }
 
-        public override void HandleResponse(object sender, EventArgs e)
+        public override void HandleResponse(byte[] data)
         {
-            byte[] bytes = (byte[])sender;
-            string message = BitConverter.ToString(bytes);
+            string message = BitConverter.ToString(data);
             Console.WriteLine("Rx: {0}", message);
 
             using (StreamWriter w = File.AppendText("log.txt"))

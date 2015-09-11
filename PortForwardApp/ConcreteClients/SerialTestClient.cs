@@ -29,13 +29,11 @@ namespace PortForward
                 _serialPort.Open();
         }
 
-        public override void HandleResponse(object sender, EventArgs e)
+        public override void HandleResponse(byte[] data)
         {
-            byte[] bytes = (byte[])sender;
-
             lock (_isIOBusy)
             {
-                _serialPort.Write(bytes, 0, bytes.Length);
+                _serialPort.Write(data, 0, data.Length);
             }
         }
 

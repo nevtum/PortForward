@@ -12,19 +12,25 @@ namespace PortForward
                 throw new InvalidOperationException("Another port is already initialized!");
 
             _port = port;
-            port.OnDataRecieved += HandleResponse;
+            port.OnDataRecieved += OnDataRecieved;
         }
 
-        public virtual void Push(byte[] message)
+        public virtual void Push(byte[] data)
         {
-            _port.Transmit(message);
+            _port.Transmit(data);
         }
 
-        public abstract void HandleResponse(object sender, EventArgs e);
+        public abstract void HandleResponse(byte[] data);
 
         public void Dispose()
         {
-            _port.OnDataRecieved -= HandleResponse;
+            _port.OnDataRecieved -= OnDataRecieved;
+        }
+
+        private void OnDataRecieved(object sender, EventArgs e)
+        {
+            byte[] data = (byte[])sender;
+            HandleResponse(data);
         }
     }
 }
