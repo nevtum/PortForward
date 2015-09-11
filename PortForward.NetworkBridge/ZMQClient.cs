@@ -13,8 +13,8 @@ namespace PortForward.NetworkBridge
         private string _topic = "raw-stream";
         private string _remote;
 
-        public ZMQClient(string publisherAddress, Port port)
-            : base(port)
+        public ZMQClient(string publisherAddress, Socket socket)
+            : base(socket)
         {
             _remote = string.Format("tcp://{0}:4040", publisherAddress);
 

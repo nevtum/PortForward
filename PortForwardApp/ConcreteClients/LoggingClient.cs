@@ -5,8 +5,8 @@ namespace PortForward
 {
     public class LoggingClient : Client
     {
-        public LoggingClient(Port port)
-            : base(port)
+        public LoggingClient(Socket socket)
+            : base(socket)
         {
         }
 

@@ -14,8 +14,8 @@ namespace PortForwardApp.Tests
             TestData data = new TestData();
             Bridge bridge = new Bridge();
 
-            Client clientA = new ExampleClient(data, bridge.PortA);
-            Client clientB = new EchoClient(bridge.PortB);
+            Client clientA = new ExampleClient(data, bridge.SocketA);
+            Client clientB = new EchoClient(bridge.SocketB);
 
             byte[] bytes = ByteStringConverter.GetBytes("Hello!");
 
@@ -37,8 +37,8 @@ namespace PortForwardApp.Tests
     {
         private TestData _data;
 
-        public ExampleClient(TestData data, Port port)
-            : base(port)
+        public ExampleClient(TestData data, Socket socket)
+            : base(socket)
         {
             _data = data;
         }

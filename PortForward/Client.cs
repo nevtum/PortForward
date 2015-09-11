@@ -4,24 +4,24 @@ namespace PortForward
 {
     public abstract class Client
     {
-        private Port _port;
+        private Socket _socket;
 
-        public Client(Port port)
+        public Client(Socket socket)
         {
-            _port = port;
-            port.OnDataRecieved += OnDataRecieved;
+            _socket = socket;
+            socket.OnDataRecieved += OnDataRecieved;
         }
 
         public virtual void Push(byte[] data)
         {
-            _port.Transmit(data);
+            _socket.Transmit(data);
         }
 
         protected abstract void HandleResponse(byte[] data);
 
         public void Dispose()
         {
-            _port.OnDataRecieved -= OnDataRecieved;
+            _socket.OnDataRecieved -= OnDataRecieved;
         }
 
         private void OnDataRecieved(object sender, EventArgs e)

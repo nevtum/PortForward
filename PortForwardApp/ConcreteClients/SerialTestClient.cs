@@ -8,8 +8,8 @@ namespace PortForward
         private SerialPort _serialPort;
         private Object _isIOBusy;
 
-        public SerialTestClient(SerialSettings settings, Port port)
-            : base(port)
+        public SerialTestClient(SerialSettings settings, Socket socket)
+            : base(socket)
         {
             _serialPort = new SerialPort(settings.PortName,
                 settings.BaudRate,

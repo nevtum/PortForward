@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Bridge.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="Port.cs" />
+    <Compile Include="Socket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ByteStringConverter.cs" />
   </ItemGroup>

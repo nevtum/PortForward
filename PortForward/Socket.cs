@@ -12,7 +12,7 @@ namespace PortForward
         void HandleReceived(object sender, EventArgs e);
     }
 
-    public class Port : Transmittable, Receivable
+    public class Socket : Transmittable, Receivable
     {
         public void Transmit(byte[] data)
         {

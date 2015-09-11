@@ -4,8 +4,8 @@ namespace PortForward
 {
     public class EchoClient : Client
     {
-        public EchoClient(Port port)
-            : base(port)
+        public EchoClient(Socket socket)
+            : base(socket)
         {
         }
 

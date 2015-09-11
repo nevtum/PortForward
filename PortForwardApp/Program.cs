@@ -32,8 +32,8 @@ namespace PortForwardApp
             };
 
             Bridge bridge = new Bridge();
-            Client clientA = new SerialTestClient(settings, bridge.PortA);
-            Client clientB = new LoggingClient(bridge.PortB);
+            Client clientA = new SerialTestClient(settings, bridge.SocketA);
+            Client clientB = new LoggingClient(bridge.SocketB);
         }
 
         private static void RunNetworkBridge()
@@ -42,8 +42,8 @@ namespace PortForwardApp
             string address = Console.ReadLine();
 
             Bridge bridge = new Bridge();
-            Client clientA = new ConsoleClient(bridge.PortA);
-            Client clientB = new ZMQClient(address, bridge.PortB);
+            Client clientA = new ConsoleClient(bridge.SocketA);
+            Client clientB = new ZMQClient(address, bridge.SocketB);
 
             while (true)
             {

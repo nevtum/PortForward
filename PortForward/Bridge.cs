@@ -5,38 +5,38 @@ namespace PortForward
 {
     public class Bridge : IDisposable
     {
-        private Port _portA;
-        private Port _portB;
+        private Socket _socketA;
+        private Socket _socketB;
 
         public Bridge()
         {
-            _portA = new Port();
-            _portB = new Port();
+            _socketA = new Socket();
+            _socketB = new Socket();
 
-            _portB.OnDataTransmitted += _portA.HandleReceived;
-            _portA.OnDataTransmitted += _portB.HandleReceived;
+            _socketB.OnDataTransmitted += _socketA.HandleReceived;
+            _socketA.OnDataTransmitted += _socketB.HandleReceived;
         }
 
-        public Port PortA
+        public Socket SocketA
         {
             get
             {
-                return _portA;
+                return _socketA;
             }
         }
 
-        public Port PortB
+        public Socket SocketB
         {
             get
             {
-                return _portB;
+                return _socketB;
             }
         }
 
         public void Dispose()
         {
-            _portB.OnDataTransmitted -= _portA.HandleReceived;
-            _portA.OnDataTransmitted -= _portB.HandleReceived;
+            _socketB.OnDataTransmitted -= _socketA.HandleReceived;
+            _socketA.OnDataTransmitted -= _socketB.HandleReceived;
         }
     }
 }
