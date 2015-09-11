@@ -9,7 +9,7 @@ namespace PortForward
         {
         }
 
-        public override void HandleResponse(byte[] data)
+        protected override void HandleResponse(byte[] data)
         {
             Push(data);
         }

@@ -49,7 +49,7 @@ namespace PortForwardApp.Tests
             base.Push(data);
         }
 
-        public override void HandleResponse(byte[] data)
+        protected override void HandleResponse(byte[] data)
         {
             _data.Response = data;
         }

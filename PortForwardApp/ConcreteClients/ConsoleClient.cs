@@ -18,7 +18,7 @@ namespace PortForward
             _taskFactory.StartNew(() => base.Push(data));
         }
 
-        public override void HandleResponse(byte[] data)
+        protected override void HandleResponse(byte[] data)
         {
             string message = PortForward.Utilities.ByteStringConverter.GetString(data);
             Console.WriteLine("Message received: {0}", message);

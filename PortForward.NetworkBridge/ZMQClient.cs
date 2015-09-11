@@ -26,7 +26,7 @@ namespace PortForward.NetworkBridge
             Task.Factory.StartNew(ListenerThread);
         }
 
-        public override void HandleResponse(byte[] data)
+        protected override void HandleResponse(byte[] data)
         {
             _pubSocket.SendMore(_topic).Send(data, data.Length, dontWait: true);
         }

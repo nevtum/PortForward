@@ -25,7 +25,7 @@ namespace PortForward
                 _serialPort.Open();
         }
 
-        public override void HandleResponse(byte[] data)
+        protected override void HandleResponse(byte[] data)
         {
             lock (_isIOBusy)
             {

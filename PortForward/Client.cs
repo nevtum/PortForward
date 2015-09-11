@@ -17,7 +17,7 @@ namespace PortForward
             _port.Transmit(data);
         }
 
-        public abstract void HandleResponse(byte[] data);
+        protected abstract void HandleResponse(byte[] data);
 
         public void Dispose()
         {

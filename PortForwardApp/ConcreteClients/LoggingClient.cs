@@ -24,7 +24,7 @@ namespace PortForward
             base.Push(data);
         }
 
-        public override void HandleResponse(byte[] data)
+        protected override void HandleResponse(byte[] data)
         {
             string message = BitConverter.ToString(data);
             Console.WriteLine("Rx: {0}", message);
