@@ -8,7 +8,8 @@ namespace PortForward
         private SerialPort _serialPort;
         private Object _isIOBusy;
 
-        public SerialTestClient(SerialSettings settings)
+        public SerialTestClient(SerialSettings settings, Port port)
+            : base(port)
         {
             _serialPort = new SerialPort(settings.PortName,
                 settings.BaudRate,
@@ -19,11 +20,6 @@ namespace PortForward
             _isIOBusy = new Object();
 
             _serialPort.DataReceived += OnSerialDataReceived;
-        }
-
-        public override void Initialize(Port port)
-        {
-            base.Initialize(port);
 
             if (_serialPort.IsOpen == false)
                 _serialPort.Open();

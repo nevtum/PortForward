@@ -6,11 +6,8 @@ namespace PortForward
     {
         private Port _port;
 
-        public virtual void Initialize(Port port)
+        public Client(Port port)
         {
-            if (_port != null)
-                throw new InvalidOperationException("Another port is already initialized!");
-
             _port = port;
             port.OnDataRecieved += OnDataRecieved;
         }

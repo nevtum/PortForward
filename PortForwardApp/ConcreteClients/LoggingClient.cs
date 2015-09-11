@@ -5,6 +5,11 @@ namespace PortForward
 {
     public class LoggingClient : Client
     {
+        public LoggingClient(Port port)
+            : base(port)
+        {
+        }
+
         public override void Push(byte[] data)
         {
             string message = BitConverter.ToString(data);

@@ -12,11 +12,10 @@ namespace PortForwardApp.Tests
         public void ShouldEchoRequest()
         {
             TestData data = new TestData();
+            Bridge bridge = new Bridge();
 
-            Client clientA = new ExampleClient(data);
-            Client clientB = new EchoClient();
-
-            Bridge bridge = new Bridge(clientA, clientB);
+            Client clientA = new ExampleClient(data, bridge.PortA);
+            Client clientB = new EchoClient(bridge.PortB);
 
             byte[] bytes = ByteStringConverter.GetBytes("Hello!");
 
@@ -38,7 +37,8 @@ namespace PortForwardApp.Tests
     {
         private TestData _data;
 
-        public ExampleClient(TestData data)
+        public ExampleClient(TestData data, Port port)
+            : base(port)
         {
             _data = data;
         }

@@ -7,7 +7,8 @@ namespace PortForward
     {
         private TaskFactory _taskFactory;
 
-        public ConsoleClient()
+        public ConsoleClient(Port port)
+            : base(port)
         {
             _taskFactory = new TaskFactory();
         }

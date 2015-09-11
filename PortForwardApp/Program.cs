@@ -31,10 +31,9 @@ namespace PortForwardApp
                 DataBits = 8
             };
 
-            Client clientA = new SerialTestClient(settings);
-            Client clientB = new LoggingClient();
-
-            Bridge bridge = new Bridge(clientA, clientB);
+            Bridge bridge = new Bridge();
+            Client clientA = new SerialTestClient(settings, bridge.PortA);
+            Client clientB = new LoggingClient(bridge.PortB);
         }
 
         private static void RunNetworkBridge()
@@ -42,10 +41,9 @@ namespace PortForwardApp
             Console.Write("Please enter publisher address: ");
             string address = Console.ReadLine();
 
-            Client clientA = new ConsoleClient();
-            Client clientB = new ZMQClient(address);
-
-            Bridge bridge = new Bridge(clientA, clientB);
+            Bridge bridge = new Bridge();
+            Client clientA = new ConsoleClient(bridge.PortA);
+            Client clientB = new ZMQClient(address, bridge.PortB);
 
             while (true)
             {
