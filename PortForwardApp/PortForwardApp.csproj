@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationClientFactory.cs" />
     <Compile Include="ConcreteClients\ConsoleClient.cs" />
     <Compile Include="ConcreteClients\EchoClient.cs" />
     <Compile Include="ConcreteClients\LoggingClient.cs" />

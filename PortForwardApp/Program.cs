@@ -11,46 +11,42 @@ namespace PortForwardApp
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            //RunSerialApp();
-            RunNetworkBridge();
+            RunClientWithInput();
+            //RunClientWithoutInput();
 
             Console.ReadLine(); // prevent application from exiting
         }
 
-        private static void RunSerialApp()
+        private static void RunClientWithoutInput()
         {
-            Console.WriteLine("Please enter COM port nr: ");
-            int comPort = int.Parse(Console.ReadLine());
-
-            SerialSettings settings = new SerialSettings()
-            {
-                BaudRate = 9600,
-                PortName = string.Format("COM{0}", comPort),
-                Parity = System.IO.Ports.Parity.None,
-                StopBits = System.IO.Ports.StopBits.One,
-                DataBits = 8
-            };
-
             Bridge bridge = new Bridge();
-            Client clientA = new SerialTestClient(settings, bridge.SocketA);
-            Client clientB = new LoggingClient(bridge.SocketB);
+            Client clientA = ApplicationClientFactory.SerialClient(bridge.SocketA);
+            Client clientB = ApplicationClientFactory.LoggingClient(bridge.SocketB);
         }
 
-        private static void RunNetworkBridge()
+        private static void RunClientWithInput()
         {
-            Console.Write("Please enter publisher address: ");
-            string address = Console.ReadLine();
-
             Bridge bridge = new Bridge();
-            Client clientA = new ConsoleClient(bridge.SocketA);
-            Client clientB = new ZMQClient(address, bridge.SocketB);
+            Client activeClient = ActiveClient(bridge.SocketA);
+            Client hidden = HiddenClient(bridge.SocketB);
 
             while (true)
             {
                 string input = Console.ReadLine();
-
-                clientA.Push(PortForward.Utilities.ByteStringConverter.GetBytes(input));
+                activeClient.Push(PortForward.Utilities.ByteStringConverter.GetBytes(input));
             }
+        }
+
+        private static Client ActiveClient(Socket socket)
+        {
+            //return ApplicationClientFactory.ConsoleClient(socket);
+            return ApplicationClientFactory.LoggingClient(socket);
+        }
+
+        private static Client HiddenClient(Socket socket)
+        {
+            //return ApplicationClientFactory.MessageQueueClient(socket);
+            return ApplicationClientFactory.ConsoleClient(socket);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
