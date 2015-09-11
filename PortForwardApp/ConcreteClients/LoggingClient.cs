@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PortForward.Utilities;
+using System;
 using System.IO;
 
 namespace PortForward
@@ -12,7 +13,7 @@ namespace PortForward
 
         public override void Push(byte[] data)
         {
-            string message = BitConverter.ToString(data);
+            string message = ByteStringConverter.GetString(data);
             Console.WriteLine("Tx: {0}", message);
 
             using (StreamWriter w = File.AppendText("log.txt"))
@@ -26,7 +27,7 @@ namespace PortForward
 
         protected override void HandleResponse(byte[] data)
         {
-            string message = BitConverter.ToString(data);
+            string message = ByteStringConverter.GetString(data);
             Console.WriteLine("Rx: {0}", message);
 
             using (StreamWriter w = File.AppendText("log.txt"))

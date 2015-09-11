@@ -20,15 +20,15 @@ namespace PortForwardApp
         private static void RunClientWithoutInput()
         {
             Bridge bridge = new Bridge();
-            Client clientA = ApplicationClientFactory.SerialClient(bridge.SocketA);
-            Client clientB = ApplicationClientFactory.LoggingClient(bridge.SocketB);
+            Client clientA = ClientA(bridge.SocketA);
+            Client clientB = ClientB(bridge.SocketB);
         }
 
         private static void RunClientWithInput()
         {
             Bridge bridge = new Bridge();
-            Client activeClient = ActiveClient(bridge.SocketA);
-            Client hidden = HiddenClient(bridge.SocketB);
+            Client activeClient = ClientA(bridge.SocketA);
+            Client hiddenClient = ClientB(bridge.SocketB);
 
             while (true)
             {
@@ -37,15 +37,16 @@ namespace PortForwardApp
             }
         }
 
-        private static Client ActiveClient(Socket socket)
+        private static Client ClientA(Socket socket)
         {
             //return ApplicationClientFactory.ConsoleClient(socket);
             return ApplicationClientFactory.LoggingClient(socket);
         }
 
-        private static Client HiddenClient(Socket socket)
+        private static Client ClientB(Socket socket)
         {
             //return ApplicationClientFactory.MessageQueueClient(socket);
+            //return ApplicationClientFactory.LoggingClient(socket);
             return ApplicationClientFactory.ConsoleClient(socket);
         }
 
