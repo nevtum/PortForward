@@ -13,26 +13,25 @@ namespace PortForward
 
         public override void Push(byte[] data)
         {
-            string message = ByteStringConverter.GetString(data);
-            Console.WriteLine("Tx: {0}", message);
-
-            using (StreamWriter w = File.AppendText("log.txt"))
-            {
-                string msg = string.Format("[Tx] {0}: {1}", DateTime.Now, message);
-                w.WriteLine(msg);
-            }
-
+            LogData(data, isTransmitting: true);
             base.Push(data);
         }
 
         protected override void HandleResponse(byte[] data)
         {
+            LogData(data, isTransmitting: false);
+        }
+
+        private void LogData(byte[] data, bool isTransmitting)
+        {
+            string direction = isTransmitting ? "Tx" : "Rx";
+
             string message = ByteStringConverter.GetString(data);
-            Console.WriteLine("Rx: {0}", message);
+            Console.WriteLine("{0}: {1}", direction, message);
 
             using (StreamWriter w = File.AppendText("log.txt"))
             {
-                string msg = string.Format("[Rx] {0}: {1}", DateTime.Now, message);
+                string msg = string.Format("[{0}] {1}: {2}", direction, DateTime.Now, message);
                 w.WriteLine(msg);
             }
         }
