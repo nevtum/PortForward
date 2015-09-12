@@ -19,6 +19,7 @@ namespace PortForwardApp.Tests
 
             byte[] bytes = ByteStringConverter.GetBytes("Hello!");
 
+            Assert.AreNotEqual(bytes, data.Request);
             clientA.Push(bytes);
 
             Assert.AreEqual(bytes, data.Request);
