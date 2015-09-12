@@ -10,7 +10,7 @@ namespace PortForward.NetworkBridge
         private NetMQContext _context;
         private NetMQSocket _pubSocket;
         private NetMQSocket _subSocket;
-        private string _topic = "raw-stream";
+        private string _topic = "";
         private string _remote;
 
         public ZMQClient(string publisherAddress, Socket socket)
@@ -28,7 +28,7 @@ namespace PortForward.NetworkBridge
 
         protected override void HandleResponse(byte[] data)
         {
-            _pubSocket.SendMore(_topic).Send(data, data.Length, dontWait: true);
+            _pubSocket.Send(data, data.Length, dontWait: true);
         }
 
         private void ListenerThread()
