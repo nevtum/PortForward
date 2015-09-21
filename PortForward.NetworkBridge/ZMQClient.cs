@@ -28,7 +28,9 @@ namespace PortForward.NetworkBridge
 
         protected override void HandleResponse(byte[] data)
         {
-            _pubSocket.Send(data, data.Length, dontWait: true);
+            NetMQMessage message = new NetMQMessage();
+            message.Append(data);
+            _pubSocket.SendMessage(message, dontWait: true);
         }
 
         private void ListenerThread()
@@ -47,8 +49,7 @@ namespace PortForward.NetworkBridge
 
                     while (true)
                     {
-                        string response = _subSocket.ReceiveString();
-                        byte[] bytes = ByteStringConverter.GetBytes(response);
+                        byte[] bytes = _subSocket.Receive();
 
                         Push(bytes);
                     }
