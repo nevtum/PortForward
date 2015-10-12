@@ -1,6 +1,7 @@
 ﻿using PortForward;
 using PortForward.NetworkBridge;
 using PortForward.Utilities;
+using PortForwardApp.ConcreteClients;
 using System;
 
 namespace PortForwardApp
@@ -11,8 +12,8 @@ namespace PortForwardApp
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            RunClientWithInput();
-            //RunClientWithoutInput();
+            //RunClientWithInput();
+            RunClientWithoutInput();
 
             Console.ReadLine(); // prevent application from exiting
         }
@@ -40,14 +41,16 @@ namespace PortForwardApp
         private static Client ClientA(Socket socket)
         {
             //return ApplicationClientFactory.ConsoleClient(socket);
-            return ApplicationClientFactory.LoggingClient(socket);
+            //return ApplicationClientFactory.LoggingClient(socket);
+            return ApplicationClientFactory.SerialClient(socket);
         }
 
         private static Client ClientB(Socket socket)
         {
             //return ApplicationClientFactory.MessageQueueClient(socket);
             //return ApplicationClientFactory.LoggingClient(socket);
-            return ApplicationClientFactory.ConsoleClient(socket);
+            //return ApplicationClientFactory.ConsoleClient(socket);
+            return new VLC_Client(socket);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
