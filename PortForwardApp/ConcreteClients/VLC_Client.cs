@@ -1,5 +1,4 @@
 ﻿using PortForward;
-using PortForward.Utilities;
 using System;
 using System.IO;
 using System.Threading;
@@ -10,9 +9,15 @@ namespace PortForwardApp.ConcreteClients
     public class VLC_Client : Client
     {
         TaskFactory _task;
+        System.Timers.Timer _timer;
 
         public VLC_Client(Socket socket) : base(socket)
         {
+            _timer = new System.Timers.Timer(5000);
+            _timer.Elapsed += OnTimeOut;
+            _timer.AutoReset = true;
+            _timer.Start();
+
             _task = new TaskFactory();
 
             _task.StartNew(() =>
@@ -38,6 +43,18 @@ namespace PortForwardApp.ConcreteClients
             });
         }
 
+        private void OnTimeOut(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            string message = "Timeout occurred";
+            Console.WriteLine("{0}", message);
+
+            using (StreamWriter w = File.AppendText("error.txt"))
+            {
+                string msg = string.Format("[ERROR] {0}: {1}", DateTime.Now, message);
+                w.WriteLine(msg);
+            }
+        }
+
         public override void Push(byte[] data)
         {
             LogData(data, isTransmitting: true);
@@ -46,6 +63,8 @@ namespace PortForwardApp.ConcreteClients
 
         protected override void HandleResponse(byte[] data)
         {
+            _timer.Stop();
+            _timer.Start();
             LogData(data, isTransmitting: false);
         }
 
