@@ -1,49 +1,42 @@
 ﻿using PortForward;
 using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace PortForwardApp.ConcreteClients
 {
     public class VLC_Client : Client
     {
-        TaskFactory _task;
-        System.Timers.Timer _timer;
+        private TaskFactory _task;
+        private TransmitQueue _outputQueue;
+        private VLC_App _app;
 
         public VLC_Client(Socket socket) : base(socket)
         {
-            _timer = new System.Timers.Timer(5000);
-            _timer.Elapsed += OnTimeOut;
-            _timer.AutoReset = true;
-            _timer.Start();
+            _outputQueue = new TransmitQueue();
+            _app = new VLC_App(_outputQueue);
+            _app.OnTimeOutOccurred += OnTimeOut;
 
             _task = new TaskFactory();
 
             _task.StartNew(() =>
             {
-                while (true)
+                while(true)
                 {
-                    byte[] data = { 0x05, 0x00, 0x01, 0xA0, 0x56, 0x22, 0x26, 0x0D };
-                    Thread.Sleep(500);
-                    Push(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
-                    Thread.Sleep(500);
-                    Push(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
-                    Thread.Sleep(500);
-                    Push(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
-                    Thread.Sleep(500);
-                    Push(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
-                    Thread.Sleep(500);
-                    Push(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
-                    Thread.Sleep(500);
-                    Push(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
-                    Thread.Sleep(500);
-                    Push(data);
+                    byte[] data = _outputQueue.Next();
+
+                    if (data != null)
+                        Push(data);
                 }
+            });
+
+            _task.StartNew(() =>
+            {
+                _app.Run();
             });
         }
 
-        private void OnTimeOut(object sender, System.Timers.ElapsedEventArgs e)
+        private void OnTimeOut(object sender, EventArgs e)
         {
             string message = "Timeout occurred";
             Console.WriteLine("{0}", message);
@@ -63,8 +56,7 @@ namespace PortForwardApp.ConcreteClients
 
         protected override void HandleResponse(byte[] data)
         {
-            _timer.Stop();
-            _timer.Start();
+            _app.ResetTimeout();
             LogData(data, isTransmitting: false);
         }
 

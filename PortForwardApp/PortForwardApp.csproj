@@ -43,10 +43,12 @@
     <Compile Include="ConcreteClients\LoggingClient.cs" />
     <Compile Include="ConcreteClients\SerialSettings.cs" />
     <Compile Include="ConcreteClients\SerialTestClient.cs" />
+    <Compile Include="ConcreteClients\VLC_App.cs" />
     <Compile Include="ConcreteClients\VLC_Client.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ClientTests.cs" />
+    <Compile Include="TransmitQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortForward.NetworkBridge\PortForward.NetworkBridge.csproj">
