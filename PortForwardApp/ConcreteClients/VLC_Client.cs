@@ -8,13 +8,13 @@ namespace PortForwardApp.ConcreteClients
     public class VLC_Client : Client
     {
         private TaskFactory _task;
-        private TransmitQueue _outputQueue;
+        private IOQueue _queue;
         private VLC_App _app;
 
         public VLC_Client(Socket socket) : base(socket)
         {
-            _outputQueue = new TransmitQueue();
-            _app = new VLC_App(_outputQueue);
+            _queue = new IOQueue();
+            _app = new VLC_App(_queue);
 
             _task = new TaskFactory();
 
@@ -22,7 +22,7 @@ namespace PortForwardApp.ConcreteClients
             {
                 while(true)
                 {
-                    byte[] data = _outputQueue.Next();
+                    byte[] data = _queue.Output.Next();
 
                     if (data != null)
                         Push(data);

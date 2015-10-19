@@ -6,11 +6,11 @@ namespace PortForwardApp.ConcreteClients
     public class VLC_App
     {
         System.Timers.Timer _timer;
-        private TransmitQueue _output;
+        private IOQueue _queue;
 
-        public VLC_App(TransmitQueue output)
+        public VLC_App(IOQueue queue)
         {
-            _output = output;
+            _queue = queue;
         }
 
         public void Run()
@@ -21,19 +21,19 @@ namespace PortForwardApp.ConcreteClients
             {
                 byte[] data = { 0x05, 0x00, 0x01, 0xA0, 0x56, 0x22, 0x26, 0x0D };
                 Thread.Sleep(500);
-                _output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
+                _queue.Output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
                 Thread.Sleep(500);
-                _output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
+                _queue.Output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
                 Thread.Sleep(500);
-                _output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
+                _queue.Output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
                 Thread.Sleep(500);
-                _output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
+                _queue.Output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
                 Thread.Sleep(500);
-                _output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
+                _queue.Output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xD2, 0x06, 0x16, 0xE8, 0x0D });
                 Thread.Sleep(500);
-                _output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
+                _queue.Output.Enqueue(new byte[] { 0x05, 0x00, 0x01, 0xC2, 0x06, 0x15, 0x9B, 0x0D });
                 Thread.Sleep(500);
-                _output.Enqueue(data);
+                _queue.Output.Enqueue(data);
             }
         }
 
