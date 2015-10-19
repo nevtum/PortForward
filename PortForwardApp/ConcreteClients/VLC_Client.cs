@@ -15,7 +15,6 @@ namespace PortForwardApp.ConcreteClients
         {
             _outputQueue = new TransmitQueue();
             _app = new VLC_App(_outputQueue);
-            _app.OnTimeOutOccurred += OnTimeOut;
 
             _task = new TaskFactory();
 
@@ -32,44 +31,35 @@ namespace PortForwardApp.ConcreteClients
 
             _task.StartNew(() =>
             {
+                _app.OnTimeOutOccurred += OnTimeOut;
                 _app.Run();
             });
         }
 
         private void OnTimeOut(object sender, EventArgs e)
         {
-            string message = "Timeout occurred";
-            Console.WriteLine("{0}", message);
-
-            using (StreamWriter w = File.AppendText("error.txt"))
-            {
-                string msg = string.Format("[ERROR] {0}: {1}", DateTime.Now, message);
-                w.WriteLine(msg);
-            }
+            Log("ERROR", "Timeout occurred", "error.txt");
         }
 
         public override void Push(byte[] data)
         {
-            LogData(data, isTransmitting: true);
+            Log("Tx", BitConverter.ToString(data), "log.txt");
             base.Push(data);
         }
 
         protected override void HandleResponse(byte[] data)
         {
             _app.ResetTimeout();
-            LogData(data, isTransmitting: false);
+            Log("Rx", BitConverter.ToString(data), "log.txt");
         }
 
-        private void LogData(byte[] data, bool isTransmitting)
+        private void Log(string header, string message, string filename)
         {
-            string direction = isTransmitting ? "Tx" : "Rx";
+            Console.WriteLine("{0}: {1}", header, message);
 
-            string message = BitConverter.ToString(data);
-            Console.WriteLine("{0}: {1}", direction, message);
-
-            using (StreamWriter w = File.AppendText("log.txt"))
+            using (StreamWriter w = File.AppendText(filename))
             {
-                string msg = string.Format("[{0}] {1}: {2}", direction, DateTime.Now, message);
+                string msg = string.Format("[{0}] {1}: {2}", header, DateTime.Now, message);
                 w.WriteLine(msg);
             }
         }
