@@ -48,13 +48,13 @@
     <Compile Include="Tests\ClientTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Distributed\Distributed.csproj">
+      <Project>{79d01909-8f89-4ab5-8f96-12fc17c9bf81}</Project>
+      <Name>Distributed</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GamingProtocol\GamingProtocol.csproj">
       <Project>{69845aa5-0dd0-4653-a734-ceb142c14d2c}</Project>
       <Name>GamingProtocol</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PortForward.NetworkBridge\PortForward.NetworkBridge.csproj">
-      <Project>{79d01909-8f89-4ab5-8f96-12fc17c9bf81}</Project>
-      <Name>PortForward.NetworkBridge</Name>
     </ProjectReference>
     <ProjectReference Include="..\PortForward\PortForward.csproj">
       <Project>{1b04c33d-678d-407f-b03c-8a37688b4821}</Project>

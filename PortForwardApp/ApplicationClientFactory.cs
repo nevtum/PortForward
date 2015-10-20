@@ -1,5 +1,5 @@
-﻿using PortForward;
-using PortForward.NetworkBridge;
+﻿using Distributed;
+using PortForward;
 using System;
 
 namespace PortForwardApp

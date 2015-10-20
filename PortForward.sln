@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortForward", "PortForward\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortForwardApp", "PortForwardApp\PortForwardApp.csproj", "{C0E18471-7EFE-4483-B342-EE942A946C64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortForward.NetworkBridge", "PortForward.NetworkBridge\PortForward.NetworkBridge.csproj", "{79D01909-8F89-4AB5-8F96-12FC17C9BF81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distributed", "Distributed\Distributed.csproj", "{79D01909-8F89-4AB5-8F96-12FC17C9BF81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingProtocol", "GamingProtocol\GamingProtocol.csproj", "{69845AA5-0DD0-4653-A734-CEB142C14D2C}"
 EndProject

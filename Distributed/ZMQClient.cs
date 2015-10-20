@@ -1,9 +1,9 @@
 ﻿using NetMQ;
-using PortForward.Utilities;
+using PortForward;
 using System;
 using System.Threading.Tasks;
 
-namespace PortForward.NetworkBridge
+namespace Distributed
 {
     public class ZMQClient : Client
     {
