@@ -1,4 +1,4 @@
-﻿namespace PortForwardApp.ConcreteClients
+﻿namespace GamingProtocol.Common
 {
     public class IOQueue
     {

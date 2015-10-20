@@ -1,9 +1,10 @@
-﻿using PortForward;
+﻿using GamingProtocol.Common;
+using PortForward;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace PortForwardApp.ConcreteClients
+namespace GamingProtocol.VLC
 {
     public class VLC_Client : Client
     {

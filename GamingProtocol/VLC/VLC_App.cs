@@ -1,7 +1,8 @@
-﻿using System;
+﻿using GamingProtocol.Common;
+using System;
 using System.Threading;
 
-namespace PortForwardApp.ConcreteClients
+namespace GamingProtocol.VLC
 {
     public class VLC_App
     {

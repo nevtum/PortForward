@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PortForwardApp
+namespace GamingProtocol.Common
 {
     public class TransmitQueue
     {

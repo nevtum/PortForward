@@ -1,5 +1,5 @@
-﻿using PortForward;
-using PortForwardApp.ConcreteClients;
+﻿using GamingProtocol.VLC;
+using PortForward;
 using System;
 
 namespace PortForwardApp
