@@ -1,5 +1,6 @@
 ﻿using Distributed;
 using PortForward;
+using PortForwardApp.Decoding;
 using System;
 
 namespace PortForwardApp
@@ -8,12 +9,16 @@ namespace PortForwardApp
     {
         public static Client ConsoleClient(Socket socket)
         {
-            return new ConsoleClient(socket);
+            IDecoder decoder = new RawByteDecoder();
+            //IDecoder decoder = new AsciiDecoder();
+            return new ConsoleClient(socket, decoder);
         }
 
         public static Client LoggingClient(Socket socket)
         {
-            return new LoggingClient(socket);
+            IDecoder decoder = new RawByteDecoder();
+            //IDecoder decoder = new AsciiDecoder();
+            return new LoggingClient(socket, decoder);
         }
 
         public static Client MessageQueueClient(Socket socket)
