@@ -1,4 +1,5 @@
 ﻿using PortForward.Utilities;
+using PortForwardApp.Decoding;
 using System;
 using System.IO;
 
@@ -6,9 +7,12 @@ namespace PortForward
 {
     public class LoggingClient : Client
     {
-        public LoggingClient(Socket socket)
+        private IDecoder _decoder;
+
+        public LoggingClient(Socket socket, IDecoder decoder)
             : base(socket)
         {
+            _decoder = decoder;
         }
 
         public override void Push(byte[] data)
@@ -26,7 +30,7 @@ namespace PortForward
         {
             string direction = isTransmitting ? "Tx" : "Rx";
 
-            string message = ByteStringConverter.GetString(data);
+            string message = _decoder.Decode(data);
             Console.WriteLine("{0}: {1}", direction, message);
 
             using (StreamWriter w = File.AppendText("log.txt"))
