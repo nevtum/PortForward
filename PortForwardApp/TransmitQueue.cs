@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PortForwardApp
 {
@@ -13,7 +14,14 @@ namespace PortForwardApp
 
         public byte[] Next()
         {
-            return _queue.Dequeue();
+            try
+            {
+                return _queue.Dequeue();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

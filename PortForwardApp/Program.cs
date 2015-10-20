@@ -40,7 +40,8 @@ namespace PortForwardApp
         {
             //return ApplicationClientFactory.ConsoleClient(socket);
             //return ApplicationClientFactory.LoggingClient(socket);
-            return ApplicationClientFactory.SerialClient(socket);
+            //return ApplicationClientFactory.SerialClient(socket);
+            return ApplicationClientFactory.MessageQueueClient(socket);
         }
 
         private static Client ClientB(Socket socket)
