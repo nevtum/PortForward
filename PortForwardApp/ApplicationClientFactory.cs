@@ -2,6 +2,7 @@
 using PortForward;
 using PortForwardApp.Decoding;
 using System;
+using System.Net;
 
 namespace PortForwardApp
 {
@@ -23,6 +24,7 @@ namespace PortForwardApp
 
         public static Client MessageQueueClient(Socket socket)
         {
+            Console.WriteLine("Listening on {0}", GetLocalIPAddress());
             Console.Write("Please enter publisher address: ");
             string address = Console.ReadLine();
 
@@ -44,6 +46,19 @@ namespace PortForwardApp
             };
 
             return new SerialTestClient(settings, socket);
+        }
+
+        private static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("Local IP Address Not Found!");
         }
     }
 }
