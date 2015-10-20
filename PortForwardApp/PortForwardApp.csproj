@@ -48,9 +48,9 @@
     <Compile Include="Tests\ClientTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PortForward.NetworkBridge\PortForward.NetworkBridge.csproj">
+    <ProjectReference Include="..\Distributed\Distributed.csproj">
       <Project>{79d01909-8f89-4ab5-8f96-12fc17c9bf81}</Project>
-      <Name>PortForward.NetworkBridge</Name>
+      <Name>Distributed</Name>
     </ProjectReference>
     <ProjectReference Include="..\PortForward\PortForward.csproj">
       <Project>{1b04c33d-678d-407f-b03c-8a37688b4821}</Project>
