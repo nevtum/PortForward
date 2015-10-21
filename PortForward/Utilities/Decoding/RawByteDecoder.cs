@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PortForwardApp.Decoding
+namespace PortForward.Utilities.Decoding
 {
     public class RawByteDecoder : IDecoder
     {

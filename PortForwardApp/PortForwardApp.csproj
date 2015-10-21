@@ -43,9 +43,6 @@
     <Compile Include="ConcreteClients\LoggingClient.cs" />
     <Compile Include="ConcreteClients\SerialSettings.cs" />
     <Compile Include="ConcreteClients\SerialTestClient.cs" />
-    <Compile Include="Decoding\AsciiDecoder.cs" />
-    <Compile Include="Decoding\IDecoder.cs" />
-    <Compile Include="Decoding\RawByteDecoder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ClientTests.cs" />
