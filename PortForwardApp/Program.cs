@@ -37,7 +37,8 @@ namespace PortForwardApp
 
         private static Client ClientA(Socket socket)
         {
-            return ApplicationClientFactory.ConsoleClient(socket);
+            return ApplicationClientFactory.EchoClient(socket);
+            //return ApplicationClientFactory.ConsoleClient(socket);
             //return ApplicationClientFactory.LoggingClient(socket);
         }
 

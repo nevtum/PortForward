@@ -8,6 +8,11 @@ namespace PortForwardApp
 {
     public static class ApplicationClientFactory
     {
+        public static Client EchoClient(Socket socket)
+        {
+            return new EchoClient(socket);
+        }
+
         public static Client ConsoleClient(Socket socket)
         {
             IDecoder decoder = new RawByteDecoder();
