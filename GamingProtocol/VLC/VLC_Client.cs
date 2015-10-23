@@ -11,12 +11,13 @@ namespace GamingProtocol.VLC
         private TaskFactory _task;
         private IOQueue _queue;
         private VLC_App _app;
+        private Object _lockObj;
 
         public VLC_Client(Socket socket) : base(socket)
         {
             _queue = new IOQueue();
             _app = new VLC_App(_queue);
-
+            _lockObj = new Object();
             _task = new TaskFactory();
 
             _task.StartNew(() =>
@@ -56,12 +57,15 @@ namespace GamingProtocol.VLC
 
         private void Log(string header, string message, string filename)
         {
-            Console.WriteLine("{0}: {1}", header, message);
-
-            using (StreamWriter w = File.AppendText(filename))
+            lock(_lockObj)
             {
-                string msg = string.Format("[{0}] {1}: {2}", header, DateTime.Now, message);
-                w.WriteLine(msg);
+                Console.WriteLine("{0}: {1}", header, message);
+
+                using (StreamWriter w = File.AppendText(filename))
+                {
+                    string msg = string.Format("[{0}] {1}: {2}", header, DateTime.Now, message);
+                    w.WriteLine(msg);
+                }
             }
         }
     }
