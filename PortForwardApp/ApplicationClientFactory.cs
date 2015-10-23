@@ -29,8 +29,8 @@ namespace PortForwardApp
 
         public static Client MessageQueueClient(Socket socket)
         {
-            Console.WriteLine("Listening on {0}", GetLocalIPAddress());
-            Console.Write("Please enter publisher address: ");
+            Console.WriteLine("Broadcasting on {0}", GetLocalIPAddress());
+            Console.Write("Enter ip address to accept data from: ");
             string address = Console.ReadLine();
 
             return new ZMQClient(address, socket);
