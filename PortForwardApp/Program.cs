@@ -38,13 +38,17 @@ namespace PortForwardApp
         private static Client ClientA(Socket socket)
         {
             //return ApplicationClientFactory.EchoClient(socket);
+            //return ApplicationClientFactory.MessageQueueClient(socket);
             return ApplicationClientFactory.ConsoleClient(socket);
+            //return ApplicationClientFactory.SerialClient(socket);
         }
 
         private static Client ClientB(Socket socket)
         {
+            //return ApplicationClientFactory.EchoClient(socket);
             return ApplicationClientFactory.MessageQueueClient(socket);
             //return ApplicationClientFactory.ConsoleClient(socket);
+            //return ApplicationClientFactory.SerialClient(socket);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

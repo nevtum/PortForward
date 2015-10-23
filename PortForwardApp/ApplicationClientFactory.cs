@@ -19,9 +19,9 @@ namespace PortForwardApp
             IDecoder decoder = new RawByteDecoder();
             //IDecoder decoder = new AsciiDecoder();
 
-            ILogger logger = new FakeLogger();
+            //ILogger logger = new FakeLogger();
             //ILogger logger = new SilentLogger();
-            //ILogger logger = new TextFileLogger("log.txt", new FakeLogger());
+            ILogger logger = new TextFileLogger("log.txt", new FakeLogger());
 
             return new ConsoleClient(socket, decoder, logger);
         }
@@ -49,7 +49,14 @@ namespace PortForwardApp
                 DataBits = 8
             };
 
-            return new SerialClient(settings, socket);
+            IDecoder decoder = new RawByteDecoder();
+            //IDecoder decoder = new AsciiDecoder();
+
+            ILogger logger = new FakeLogger();
+            //ILogger logger = new SilentLogger();
+            //ILogger logger = new TextFileLogger("serial_log.txt", new FakeLogger());
+
+            return new SerialClient(socket, settings, decoder, logger);
         }
 
         private static string GetLocalIPAddress()
