@@ -45,6 +45,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VLC\VLC_App.cs" />
     <Compile Include="VLC\VLC_Client.cs" />
+    <Compile Include="XSeries\XSeriesClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortForward\PortForward.csproj">
