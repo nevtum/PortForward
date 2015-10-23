@@ -50,7 +50,7 @@ namespace PortForwardApp
                 DataBits = 8
             };
 
-            return new SerialTestClient(settings, socket);
+            return new SerialClient(settings, socket);
         }
 
         private static string GetLocalIPAddress()

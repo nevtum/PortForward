@@ -3,12 +3,12 @@ using System.IO.Ports;
 
 namespace PortForward
 {
-    public class SerialTestClient : Client, IDisposable
+    public class SerialClient : Client, IDisposable
     {
         private SerialPort _serialPort;
         private Object _isIOBusy;
 
-        public SerialTestClient(SerialSettings settings, Socket socket)
+        public SerialClient(SerialSettings settings, Socket socket)
             : base(socket)
         {
             _serialPort = new SerialPort(settings.PortName,
