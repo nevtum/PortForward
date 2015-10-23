@@ -1,32 +1,31 @@
-﻿using PortForwardApp.Decoding;
-using System;
-using System.Threading.Tasks;
+﻿using PortForward.Utilities.Decoding;
+using PortForwardApp.Logging;
 
 namespace PortForward
 {
     public class ConsoleClient : Client
     {
-        private TaskFactory _taskFactory;
         private IDecoder _decoder;
+        private ILogger _logger;
 
-        public ConsoleClient(Socket socket, IDecoder decoder)
+        public ConsoleClient(Socket socket, IDecoder decoder, ILogger logger)
             : base(socket)
         {
             _decoder = decoder;
-            _taskFactory = new TaskFactory();
+            _logger = logger;
         }
 
         public override void Push(byte[] data)
         {
-            _taskFactory.StartNew(() => base.Push(data));
+            base.Push(data);
             string message = _decoder.Decode(data);
-            Console.WriteLine("Message sent: {0}", message);
+            _logger.Log("Message sent: {0}", message);
         }
 
         protected override void HandleResponse(byte[] data)
         {
             string message = _decoder.Decode(data);
-            Console.WriteLine("Message received: {0}", message);
+            _logger.Log("Message received: {0}", message);
         }
     }
 }

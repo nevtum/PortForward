@@ -1,7 +1,7 @@
 ﻿using PortForward.Utilities;
 using System;
 
-namespace PortForwardApp.Decoding
+namespace PortForward.Utilities.Decoding
 {
     public class AsciiDecoder : IDecoder
     {

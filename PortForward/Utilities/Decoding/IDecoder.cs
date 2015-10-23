@@ -1,4 +1,4 @@
-﻿namespace PortForwardApp.Decoding
+﻿namespace PortForward.Utilities.Decoding
 {
     public interface IDecoder
     {

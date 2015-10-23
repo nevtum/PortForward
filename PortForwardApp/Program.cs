@@ -39,17 +39,17 @@ namespace PortForwardApp
         private static Client ClientA(Socket socket)
         {
             //return ApplicationClientFactory.EchoClient(socket);
-            //return ApplicationClientFactory.ConsoleClient(socket);
-            //return ApplicationClientFactory.LoggingClient(socket);
-            //return ApplicationClientFactory.SerialClient(socket);
             return ApplicationClientFactory.MessageQueueClient(socket);
+            //return ApplicationClientFactory.ConsoleClient(socket);
+            //return ApplicationClientFactory.SerialClient(socket);
         }
 
         private static Client ClientB(Socket socket)
         {
+            //return ApplicationClientFactory.EchoClient(socket);
             //return ApplicationClientFactory.MessageQueueClient(socket);
-            //return ApplicationClientFactory.LoggingClient(socket);
             //return ApplicationClientFactory.ConsoleClient(socket);
+            //return ApplicationClientFactory.SerialClient(socket);
             return new VLC_Client(socket);
         }
 

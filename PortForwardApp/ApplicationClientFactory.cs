@@ -1,6 +1,7 @@
 ﻿using Distributed;
 using PortForward;
-using PortForwardApp.Decoding;
+using PortForward.Utilities.Decoding;
+using PortForwardApp.Logging;
 using System;
 using System.Net;
 
@@ -17,20 +18,18 @@ namespace PortForwardApp
         {
             IDecoder decoder = new RawByteDecoder();
             //IDecoder decoder = new AsciiDecoder();
-            return new ConsoleClient(socket, decoder);
-        }
 
-        public static Client LoggingClient(Socket socket)
-        {
-            IDecoder decoder = new RawByteDecoder();
-            //IDecoder decoder = new AsciiDecoder();
-            return new LoggingClient(socket, decoder);
+            //ILogger logger = new FakeLogger();
+            //ILogger logger = new SilentLogger();
+            ILogger logger = new TextFileLogger("log.txt", new FakeLogger());
+
+            return new ConsoleClient(socket, decoder, logger);
         }
 
         public static Client MessageQueueClient(Socket socket)
         {
-            Console.WriteLine("Listening on {0}", GetLocalIPAddress());
-            Console.Write("Please enter publisher address: ");
+            Console.WriteLine("Broadcasting on {0}", GetLocalIPAddress());
+            Console.Write("Enter ip address to accept data from: ");
             string address = Console.ReadLine();
 
             return new ZMQClient(address, socket);
@@ -50,7 +49,14 @@ namespace PortForwardApp
                 DataBits = 8
             };
 
-            return new SerialTestClient(settings, socket);
+            IDecoder decoder = new RawByteDecoder();
+            //IDecoder decoder = new AsciiDecoder();
+
+            ILogger logger = new FakeLogger();
+            //ILogger logger = new SilentLogger();
+            //ILogger logger = new TextFileLogger("serial_log.txt", new FakeLogger());
+
+            return new SerialClient(socket, settings, decoder, logger);
         }
 
         private static string GetLocalIPAddress()
