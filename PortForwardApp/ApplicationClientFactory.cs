@@ -1,6 +1,7 @@
 ﻿using Distributed;
 using PortForward;
 using PortForward.Utilities.Decoding;
+using PortForwardApp.Logging;
 using System;
 using System.Net;
 
@@ -17,14 +18,12 @@ namespace PortForwardApp
         {
             IDecoder decoder = new RawByteDecoder();
             //IDecoder decoder = new AsciiDecoder();
-            return new ConsoleClient(socket, decoder);
-        }
 
-        public static Client LoggingClient(Socket socket)
-        {
-            IDecoder decoder = new RawByteDecoder();
-            //IDecoder decoder = new AsciiDecoder();
-            return new LoggingClient(socket, decoder);
+            ILogger logger = new FakeLogger();
+            //ILogger logger = new SilentLogger();
+            //ILogger logger = new TextFileLogger("log.txt", new FakeLogger());
+
+            return new ConsoleClient(socket, decoder, logger);
         }
 
         public static Client MessageQueueClient(Socket socket)
