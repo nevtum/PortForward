@@ -1,48 +1,39 @@
 ﻿using GamingProtocol.Common;
 using PortForward;
 using PortForward.Utilities.Decoding;
-using System;
+using System.Threading.Tasks;
 
 namespace GamingProtocol.XSeries
 {
     public class XSeriesClient : Client
     {
-        private IDecoder _decoder;
         private IOQueue _queue;
-        private int _peekCounter;
+        private TaskFactory _task;
+        private XSeriesApp _processor;
 
-        public XSeriesClient(Socket socket, IDecoder decoder)
+        public XSeriesClient(Socket socket)
             : base(socket)
         {
-            _decoder = decoder;
             _queue = new IOQueue();
-            _peekCounter = 1;
+            _task = new TaskFactory();
+            _processor = new XSeriesApp(_queue, new RawByteDecoder());
+
+            _task.StartNew(() =>
+            {
+                while (true)
+                {
+                    byte[] data = _queue.Output.Next();
+
+                    if (data != null)
+                        Push(data);
+                }
+            });
         }
 
         protected override void HandleResponse(byte[] data)
         {
             _queue.Input.Enqueue(data);
-
-            byte[] sob = _queue.Input.Peek(1);
-
-            if (sob[0] != 0xFF)
-            {
-                _queue.Input.Purge(1);
-            }
-
-            byte[] chunk = _queue.Input.Peek(_peekCounter);
-
-            if (chunk.Length < 128)
-            {
-                _peekCounter++;
-            }
-            else
-            {
-                byte[] datablock = _queue.Input.Next(_peekCounter);
-                _peekCounter = 1;
-
-                Console.WriteLine(_decoder.Decode(datablock));
-            }
+            _processor.Process();
         }
     }
 }

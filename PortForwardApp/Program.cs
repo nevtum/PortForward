@@ -53,7 +53,7 @@ namespace PortForwardApp
             //return ApplicationClientFactory.ConsoleClient(socket);
             //return ApplicationClientFactory.SerialClient(socket);
             //return new VLC_Client(socket);
-            return new XSeriesClient(socket, new RawByteDecoder());
+            return new XSeriesClient(socket);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
