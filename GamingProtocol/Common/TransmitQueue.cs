@@ -35,14 +35,10 @@ namespace GamingProtocol.Common
 
         public byte[] Next()
         {
-            try
-            {
+            if (_queue.Count > 0)
                 return _queue.Dequeue();
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public byte[] Next(int nr)
