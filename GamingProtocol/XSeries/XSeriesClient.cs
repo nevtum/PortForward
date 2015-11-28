@@ -20,6 +20,7 @@ namespace GamingProtocol.XSeries
 
             _task.StartNew(() =>
             {
+                // Make method event based. Too much resources used
                 while (true)
                 {
                     byte[] data = _queue.Output.Next();

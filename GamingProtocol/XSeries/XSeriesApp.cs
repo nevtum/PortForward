@@ -7,50 +7,62 @@ namespace GamingProtocol.XSeries
 {
     class XSeriesApp
     {
+        private readonly IDecoder _decoder;
+        private int MIN_IDENTIFICATION_LENGTH = 2;
         private IOQueue _queue;
         private int _peekCounter;
-        private IDecoder _decoder;
-        private int MIN_IDENTIFICATION_LENGTH = 2;
+        private XProcessorState _state;
 
         public XSeriesApp(IOQueue queue, IDecoder decoder)
         {
             _peekCounter = 1;
             _queue = queue;
             _decoder = decoder;
+            _state = new XProcessorState();
         }
 
         public void Process()
         {
-            byte[] sob = _queue.Input.Peek(1);
+            if (_state.IsTransactionInProgress)
+                return; // Return for now. Add more logic later!
 
-            if (sob[0] != 0xFF)
-                _queue.Input.Purge(1);
+            if (!_state.IsReceivePending)
+            {
+                byte[] sob = _queue.Input.Peek(1);
+
+                if (sob[0] != 0xFF)
+                    _queue.Input.Purge(1);
+            }
 
             byte[] chunk = _queue.Input.Peek(_peekCounter);
 
             PacketDescriptor descriptor = GetPacketInfo(chunk);
+            _state.UpdateWaitingFor(descriptor);
 
-            if (chunk.Length < descriptor.ExpectedLength)
+            if (chunk.Length < _state.WaitFor.ExpectedLength)
             {
                 _peekCounter++;
             }
             else
             {
-                ProcessDatablock(descriptor);
+                ProcessDatablock();
             }
         }
 
-        private void ProcessDatablock(PacketDescriptor descriptor)
+        private void ProcessDatablock()
         {
             byte[] datablock = _queue.Input.Next(_peekCounter);
             _peekCounter = 1;
 
-            Console.WriteLine(descriptor.Identifier);
+            Console.WriteLine(_state.WaitFor.Identifier);
             Console.WriteLine(_decoder.Decode(datablock));
 
             // TODO
+            // Validate datablock with CRC check
             // Publish event datablock received
             // Wrap bytes in a datablock value object
+
+            _state.SetFreeForFurtherProcessing();
         }
 
         private PacketDescriptor GetPacketInfo(byte[] data)
