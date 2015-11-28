@@ -1,4 +1,5 @@
 ﻿using GamingProtocol.Common;
+using GamingProtocol.XSeries.Domain;
 using PortForward.Utilities.Decoding;
 using System;
 
@@ -9,6 +10,7 @@ namespace GamingProtocol.XSeries
         private IOQueue _queue;
         private int _peekCounter;
         private IDecoder _decoder;
+        private int MIN_IDENTIFICATION_LENGTH = 2;
 
         public XSeriesApp(IOQueue queue, IDecoder decoder)
         {
@@ -26,17 +28,67 @@ namespace GamingProtocol.XSeries
 
             byte[] chunk = _queue.Input.Peek(_peekCounter);
 
-            if (chunk.Length < 128)
+            PacketDescriptor descriptor = GetPacketInfo(chunk);
+
+            if (chunk.Length < descriptor.ExpectedLength)
             {
                 _peekCounter++;
             }
             else
             {
-                byte[] datablock = _queue.Input.Next(_peekCounter);
-                _peekCounter = 1;
-
-                Console.WriteLine(_decoder.Decode(datablock));
+                ProcessDatablock(descriptor);
             }
+        }
+
+        private void ProcessDatablock(PacketDescriptor descriptor)
+        {
+            byte[] datablock = _queue.Input.Next(_peekCounter);
+            _peekCounter = 1;
+
+            Console.WriteLine(descriptor.Identifier);
+            Console.WriteLine(_decoder.Decode(datablock));
+
+            // TODO
+            // Publish event datablock received
+            // Wrap bytes in a datablock value object
+        }
+
+        private PacketDescriptor GetPacketInfo(byte[] data)
+        {
+            // Good enough implementation for now!
+
+            if (data.Length < MIN_IDENTIFICATION_LENGTH)
+                return NullPacketDescriptor();
+
+            if (data[1] == 0x00)
+            {
+                return new PacketDescriptor()
+                {
+                    Identifier = "SDB",
+                    ExpectedLength = 128,
+                };
+            }
+            else if (data[1] == 0x22)
+            {
+                return new PacketDescriptor()
+                {
+                    Identifier = "MDB",
+                    ExpectedLength = 128,
+                };
+            }
+            else
+                return NullPacketDescriptor();
+        }
+
+        private PacketDescriptor NullPacketDescriptor()
+        {
+            return new PacketDescriptor()
+            {
+                Identifier = "UNKNOWN",
+                ExpectedLength = 0,
+                ExpectedRxTimeoutMs = 0,
+                ExpectedTxTimeoutMs = 0
+            };
         }
     }
 }
