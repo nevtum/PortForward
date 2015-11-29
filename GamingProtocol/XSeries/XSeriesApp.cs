@@ -39,13 +39,13 @@ namespace GamingProtocol.XSeries
             PacketDescriptor descriptor = GetPacketInfo(chunk);
             _state = _state.UpdateWaitingFor(descriptor);
 
-            if (!_state.IsReadyForProcessing(chunk))
+            if (_state.IsReadyForProcessing(chunk))
             {
-                _peekCounter++;
+                ProcessDatablock();
             }
             else
             {
-                ProcessDatablock();
+                _peekCounter++;
             }
         }
 
