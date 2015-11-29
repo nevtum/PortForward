@@ -37,8 +37,7 @@ namespace PortForwardApp
                 address = Console.ReadLine();
             }
 
-            //return new ZMQClient(address, socket);
-            return new ZMQClient("10.10.10.57", socket);
+            return new ZMQClient(address, socket);
         }
 
         public static Client SerialClient(Socket socket)
