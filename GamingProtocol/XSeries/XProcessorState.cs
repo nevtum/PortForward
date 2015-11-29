@@ -25,6 +25,14 @@ namespace GamingProtocol.XSeries
         public bool IsIdle { get; private set; }
         public PacketDescriptor WaitFor { get; private set; }
 
+        public bool IsReadyForProcessing(byte[] data)
+        {
+            if (WaitFor == null)
+                return true;
+
+            return data.Length >= WaitFor.ExpectedLength;
+        }
+
         public void UpdateWaitingFor(PacketDescriptor descriptor)
         {
             if (IsReceivePending)

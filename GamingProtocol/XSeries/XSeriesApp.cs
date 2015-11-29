@@ -39,7 +39,7 @@ namespace GamingProtocol.XSeries
             PacketDescriptor descriptor = GetPacketInfo(chunk);
             _state.UpdateWaitingFor(descriptor);
 
-            if (chunk.Length < _state.WaitFor.ExpectedLength)
+            if (!_state.IsReadyForProcessing(chunk))
             {
                 _peekCounter++;
             }
