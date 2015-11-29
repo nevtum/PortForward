@@ -11,19 +11,20 @@ namespace GamingProtocol.XSeries
     /// </summary>
     public class XProcessorState
     {
-        private Object _lockObj = new Object();
-
-        public XProcessorState()
+        public XProcessorState(ProcessorStateParams parameters = null)
         {
-            // Needs more analysis of valid states
-            IsTransactionInProgress = false;
-            SetFreeForFurtherProcessing();
+            if (parameters == null)
+            {
+                SetDefaultParameters();
+            }
+            else
+            {
+                IsReceivePending = parameters.IsReceivePending;
+                IsIdle = parameters.IsIdle;
+                WaitFor = parameters.WaitFor;
+                IsTransactionInProgress = parameters.IsTransactionInProgress;
+            }
         }
-
-        public bool IsReceivePending { get; private set; }
-        public bool IsTransactionInProgress { get; private set; }
-        public bool IsIdle { get; private set; }
-        public PacketDescriptor WaitFor { get; private set; }
 
         public bool IsReadyForProcessing(byte[] data)
         {
@@ -33,37 +34,55 @@ namespace GamingProtocol.XSeries
             return data.Length >= WaitFor.ExpectedLength;
         }
 
-        public void UpdateWaitingFor(PacketDescriptor descriptor)
+        public XProcessorState UpdateWaitingFor(PacketDescriptor descriptor)
         {
             if (IsReceivePending)
                 if (descriptor.Identifier != WaitFor.Identifier)
                     throw new Exception("Corrupted datablock received");
 
-            lock (_lockObj)
+            ProcessorStateParams parameters = new ProcessorStateParams()
             {
-                WaitFor = descriptor;
-                IsReceivePending = true;
-                IsIdle = false;
-            }
+                IsReceivePending = true,
+                IsIdle = false,
+                IsTransactionInProgress = IsTransactionInProgress,
+                WaitFor = descriptor
+            };
+
+            return new XProcessorState(parameters);
         }
 
-        public void SetFreeForFurtherProcessing()
+        public XProcessorState SetFreeForFurtherProcessing()
         {
-            lock (_lockObj)
+            ProcessorStateParams parameters = new ProcessorStateParams()
             {
-                if (!IsTransactionInProgress)
-                    IsIdle = true;
+                IsReceivePending = false,
+                IsIdle = !IsTransactionInProgress ? true : IsIdle,
+                IsTransactionInProgress = IsTransactionInProgress,
+                WaitFor = null
+            };
 
-                IsReceivePending = false;
-
-                WaitFor = new PacketDescriptor()
-                {
-                    Identifier = "UNKNOWN",
-                    ExpectedLength = 0,
-                    ExpectedRxTimeoutMs = 0,
-                    ExpectedTxTimeoutMs = 0
-                };
-            }
+            return new XProcessorState(parameters);
         }
+
+        private void SetDefaultParameters()
+        {
+            IsReceivePending = false;
+            IsIdle = true;
+            WaitFor = null;
+            IsTransactionInProgress = false;
+        }
+
+        public bool IsReceivePending { get; private set; }
+        public bool IsTransactionInProgress { get; private set; }
+        public bool IsIdle { get; private set; }
+        public PacketDescriptor WaitFor { get; private set; }
+    }
+
+    public class ProcessorStateParams
+    {
+        public bool IsReceivePending { get; set; }
+        public bool IsTransactionInProgress { get; set; }
+        public bool IsIdle { get; set; }
+        public PacketDescriptor WaitFor { get; set; }
     }
 }

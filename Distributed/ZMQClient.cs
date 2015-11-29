@@ -56,6 +56,7 @@ namespace Distributed
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     Console.WriteLine("Could not connect to remote publisher!");
                     Console.WriteLine("Trying to re-connect in {0}s", reconnectDelay);
                     System.Threading.Thread.Sleep(reconnectDelay * 1000);
