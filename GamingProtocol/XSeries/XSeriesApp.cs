@@ -37,7 +37,7 @@ namespace GamingProtocol.XSeries
             byte[] chunk = _queue.Input.Peek(_peekCounter);
 
             PacketDescriptor descriptor = GetPacketInfo(chunk);
-            _state = _state.UpdateWaitingFor(descriptor);
+            _state.UpdateWaitingFor(descriptor);
 
             if (_state.IsReadyForProcessing(chunk))
             {
@@ -54,9 +54,7 @@ namespace GamingProtocol.XSeries
             byte[] datablock = _queue.Input.Next(_peekCounter);
             _peekCounter = 1;
 
-            if (_state.WaitFor != null)
-                Console.WriteLine(_state.WaitFor.Identifier);
-
+            Console.WriteLine(_state.PacketIdentifier());
             Console.WriteLine(_decoder.Decode(datablock));
 
             // TODO
@@ -64,7 +62,7 @@ namespace GamingProtocol.XSeries
             // Publish event datablock received
             // Wrap bytes in a datablock value object
 
-            _state = _state.SetFreeForFurtherProcessing();
+            _state.SetFreeForFurtherProcessing();
         }
 
         private PacketDescriptor GetPacketInfo(byte[] data)

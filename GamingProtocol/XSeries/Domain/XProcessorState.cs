@@ -1,76 +1,69 @@
-﻿using System;
-
-namespace GamingProtocol.XSeries.Domain
+﻿namespace GamingProtocol.XSeries.Domain
 {
     /// <summary>
     /// An XSeries data processing state machine.
     /// </summary>
     public class XProcessorState
     {
+        private ProcessorStateParams _params;
+
         public XProcessorState(ProcessorStateParams parameters = null)
         {
             if (parameters == null)
             {
                 SetDefaultParameters();
+                return;
             }
-            else
-            {
-                IsReceivePending = parameters.IsReceivePending;
-                IsIdle = parameters.IsIdle;
-                WaitFor = parameters.WaitFor;
-                IsTransactionInProgress = parameters.IsTransactionInProgress;
-            }
+
+            _params = parameters;
         }
 
         public bool IsReadyForProcessing(byte[] data)
         {
-            if (WaitFor == null)
+            if (_params.WaitFor == null)
                 return true;
 
-            return data.Length >= WaitFor.ExpectedLength;
+            return data.Length >= _params.WaitFor.ExpectedLength;
         }
 
-        public XProcessorState UpdateWaitingFor(PacketDescriptor descriptor)
+        public void UpdateWaitingFor(PacketDescriptor descriptor)
         {
-            if (IsReceivePending)
-                if (descriptor.Identifier != WaitFor.Identifier)
-                    throw new Exception("Corrupted datablock received");
-
-            ProcessorStateParams parameters = new ProcessorStateParams()
-            {
-                IsReceivePending = true,
-                IsIdle = false,
-                IsTransactionInProgress = IsTransactionInProgress,
-                WaitFor = descriptor
-            };
-
-            return new XProcessorState(parameters);
+            _params = _params.UpdateWaitingFor(descriptor);
+            // To register a timeout callback if applicable
         }
 
-        public XProcessorState SetFreeForFurtherProcessing()
+        public void SetFreeForFurtherProcessing()
         {
-            ProcessorStateParams parameters = new ProcessorStateParams()
-            {
-                IsReceivePending = false,
-                IsIdle = !IsTransactionInProgress ? true : IsIdle,
-                IsTransactionInProgress = IsTransactionInProgress,
-                WaitFor = null
-            };
-
-            return new XProcessorState(parameters);
+            _params = _params.SetAvailableForNewReads();
         }
 
         private void SetDefaultParameters()
         {
-            IsReceivePending = false;
-            IsIdle = true;
-            WaitFor = null;
-            IsTransactionInProgress = false;
+            _params = ProcessorStateParams.InitialState();
         }
 
-        public bool IsReceivePending { get; private set; }
-        public bool IsTransactionInProgress { get; private set; }
-        public bool IsIdle { get; private set; }
-        public PacketDescriptor WaitFor { get; private set; }
+        public string PacketIdentifier()
+        {
+            if (_params.WaitFor != null)
+                return _params.WaitFor.Identifier;
+
+            return "UNKNOWN";
+        }
+
+        public bool IsReceivePending
+        {
+            get
+            {
+                return _params.IsReceivePending;
+            }
+        }
+
+        public bool IsTransactionInProgress
+        {
+            get
+            {
+                return _params.IsTransactionInProgress;
+            }
+        }
     }
 }
