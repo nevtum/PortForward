@@ -1,10 +1,6 @@
-﻿using GamingProtocol.XSeries.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 
-namespace GamingProtocol.XSeries
+namespace GamingProtocol.XSeries.Domain
 {
     /// <summary>
     /// An XSeries data processing state machine.
@@ -76,13 +72,5 @@ namespace GamingProtocol.XSeries
         public bool IsTransactionInProgress { get; private set; }
         public bool IsIdle { get; private set; }
         public PacketDescriptor WaitFor { get; private set; }
-    }
-
-    public class ProcessorStateParams
-    {
-        public bool IsReceivePending { get; set; }
-        public bool IsTransactionInProgress { get; set; }
-        public bool IsIdle { get; set; }
-        public PacketDescriptor WaitFor { get; set; }
     }
 }
