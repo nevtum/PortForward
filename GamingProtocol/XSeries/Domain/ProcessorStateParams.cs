@@ -33,6 +33,9 @@ namespace GamingProtocol.XSeries.Domain
 
         public ProcessorStateParams UpdateWaitingFor(PacketDescriptor descriptor)
         {
+            if (descriptor == null)
+                throw new ArgumentNullException("Must specify a packet descriptor");
+
             if (IsReceivePending)
                 if (descriptor.Identifier != WaitFor.Identifier)
                     throw new Exception("Corrupted datablock received");
