@@ -57,7 +57,7 @@
         {
             get
             {
-                return _params.IsTransactionInProgress;
+                return _params.IsTransmissionPending;
             }
         }
     }

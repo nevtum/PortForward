@@ -5,7 +5,7 @@ namespace GamingProtocol.XSeries.Domain
     public class ProcessorStateParams
     {
         public bool IsReceivePending { get; private set; }
-        public bool IsTransactionInProgress { get; private set; }
+        public bool IsTransmissionPending { get; private set; }
         public bool IsIdle { get; private set; }
         public PacketDescriptor WaitFor { get; private set; }
 
@@ -16,7 +16,7 @@ namespace GamingProtocol.XSeries.Domain
                 IsReceivePending = false,
                 IsIdle = true,
                 WaitFor = null,
-                IsTransactionInProgress = false,
+                IsTransmissionPending = false,
             };
         }
 
@@ -25,8 +25,8 @@ namespace GamingProtocol.XSeries.Domain
             return new ProcessorStateParams()
             {
                 IsReceivePending = false,
-                IsIdle = !IsTransactionInProgress ? true : IsIdle,
-                IsTransactionInProgress = IsTransactionInProgress,
+                IsIdle = !IsTransmissionPending ? true : IsIdle,
+                IsTransmissionPending = IsTransmissionPending,
                 WaitFor = null
             };
         }
@@ -44,7 +44,7 @@ namespace GamingProtocol.XSeries.Domain
             {
                 IsReceivePending = true,
                 IsIdle = false,
-                IsTransactionInProgress = IsTransactionInProgress,
+                IsTransmissionPending = IsTransmissionPending,
                 WaitFor = descriptor
             };
         }

@@ -24,7 +24,12 @@ namespace GamingProtocol.XSeries
         public void Process()
         {
             if (_state.IsTransactionInProgress)
+            {
+                if (_state.IsReceivePending)
+                    _peekCounter++;
+
                 return; // Return for now. Add more logic later!
+            }
 
             byte[] chunk = _queue.Input.Peek(_peekCounter);
 
