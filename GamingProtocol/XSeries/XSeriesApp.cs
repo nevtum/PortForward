@@ -26,27 +26,27 @@ namespace GamingProtocol.XSeries
             if (_state.IsTransactionInProgress)
                 return; // Return for now. Add more logic later!
 
+            byte[] chunk = _queue.Input.Peek(_peekCounter);
+
             if (!_state.IsReceivePending)
             {
                 byte[] sob = _queue.Input.Peek(1);
 
                 if (sob[0] != 0xFF)
                     _queue.Input.Purge(1);
+
+                PacketDescriptor descriptor = GetPacketInfo(chunk);
+                _state.UpdateWaitingFor(descriptor);
             }
-
-            byte[] chunk = _queue.Input.Peek(_peekCounter);
-
-            PacketDescriptor descriptor = GetPacketInfo(chunk);
-            _state.UpdateWaitingFor(descriptor);
 
             if (_state.IsReadyForProcessing(chunk))
             {
                 ProcessDatablock();
+                _state.SetFreeForFurtherProcessing();
+                return;
             }
-            else
-            {
-                _peekCounter++;
-            }
+
+            _peekCounter++;
         }
 
         private void ProcessDatablock()
@@ -61,8 +61,6 @@ namespace GamingProtocol.XSeries
             // Validate datablock with CRC check
             // Publish event datablock received
             // Wrap bytes in a datablock value object
-
-            _state.SetFreeForFurtherProcessing();
         }
 
         private PacketDescriptor GetPacketInfo(byte[] data)

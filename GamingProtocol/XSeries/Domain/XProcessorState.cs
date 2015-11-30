@@ -11,7 +11,7 @@
         {
             if (parameters == null)
             {
-                SetDefaultParameters();
+                _params = ProcessorStateParams.InitialState();
                 return;
             }
 
@@ -35,11 +35,6 @@
         public void SetFreeForFurtherProcessing()
         {
             _params = _params.SetAvailableForNewReads();
-        }
-
-        private void SetDefaultParameters()
-        {
-            _params = ProcessorStateParams.InitialState();
         }
 
         public string PacketIdentifier()
