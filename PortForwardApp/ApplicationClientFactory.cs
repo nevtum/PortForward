@@ -57,9 +57,9 @@ namespace PortForwardApp
             IDecoder decoder = new RawByteDecoder();
             //IDecoder decoder = new AsciiDecoder();
 
-            ILogger logger = new FakeLogger();
+            //ILogger logger = new FakeLogger();
             //ILogger logger = new SilentLogger();
-            //ILogger logger = new TextFileLogger("serial_log.txt", new FakeLogger());
+            ILogger logger = new TextFileLogger("serial_log.txt");
 
             return new SerialClient(socket, settings, decoder, logger);
         }

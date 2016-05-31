@@ -7,9 +7,9 @@ namespace PortForwardApp.Logging
 {
     public class FakeLogger : ILogger
     {
-        public void Log(string message, params object[] args)
+        public void Log(string header, DateTime datetime, string data)
         {
-            Console.WriteLine(message, args);
+            Console.WriteLine("[{0}] {1}: {2}", header, datetime, data);
         }
     }
 }

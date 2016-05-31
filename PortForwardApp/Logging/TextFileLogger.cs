@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace PortForwardApp.Logging
 {
@@ -6,22 +7,27 @@ namespace PortForwardApp.Logging
     {
         private string _filename;
         private ILogger _inner;
+        private Object _lockObject;
 
         public TextFileLogger(string filename, ILogger inner = null)
         {
             _filename = filename;
             _inner = inner;
+            _lockObject = new Object();
         }
 
-        public void Log(string message, params object[] args)
+        public void Log(string header, DateTime datetime, string data)
         {
-            using (StreamWriter w = File.AppendText(_filename))
+            lock (_lockObject)
             {
-                w.WriteLine(message, args);
+                using (StreamWriter w = File.AppendText(_filename))
+                {
+                    w.WriteLine("[{0}] {1}: {2}", header, datetime, data);
+                }
             }
 
             if (_inner != null)
-                _inner.Log(message, args);
+                _inner.Log(header, datetime, data);
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace PortForwardApp.Logging
+﻿using System;
+
+namespace PortForwardApp.Logging
 {
     public interface ILogger
     {
-        void Log(string message, params object[] args);
+        void Log(string header, DateTime datetime, string data);
     }
 }

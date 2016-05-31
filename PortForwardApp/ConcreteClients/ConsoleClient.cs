@@ -1,5 +1,6 @@
 ﻿using PortForward.Utilities.Decoding;
 using PortForwardApp.Logging;
+using System;
 
 namespace PortForward
 {
@@ -19,13 +20,13 @@ namespace PortForward
         {
             base.Push(data);
             string message = _decoder.Decode(data);
-            _logger.Log("Message sent: {0}", message);
+            _logger.Log("Message sent", DateTime.Now, message);
         }
 
         protected override void HandleResponse(byte[] data)
         {
             string message = _decoder.Decode(data);
-            _logger.Log("Message received: {0}", message);
+            _logger.Log("Message received", DateTime.Now, message);
         }
     }
 }

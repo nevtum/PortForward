@@ -41,7 +41,7 @@ namespace PortForward
             {
                 _serialPort.Write(data, 0, data.Length);
                 string message = _decoder.Decode(data);
-                _logger.Log("[SERIAL TX] {0}: {1}", DateTime.Now, message);
+                _logger.Log("SERIAL TX", DateTime.Now, message);
             }
         }
 
@@ -56,7 +56,7 @@ namespace PortForward
                 _serialPort.Read(bytes, 0, size);
 
                 string message = _decoder.Decode(bytes);
-                _logger.Log("[SERIAL RX] {0}: {1}", DateTime.Now, message);
+                _logger.Log("SERIAL RX", DateTime.Now, message);
             }
 
             System.Diagnostics.Debug.Assert(bytes != null);
