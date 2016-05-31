@@ -17,10 +17,13 @@ namespace GamingProtocol.Common
         {
             List<byte> flattened = new List<byte>();
 
-            foreach (byte[] chunk in _queue.Take(nr))
+            foreach (byte[] chunk in _queue.Take(nr).Where(c => c.Length > 0))
             {
                 flattened.AddRange(chunk);
             }
+
+            if (flattened.Count == 0)
+                throw new Exception("What's going on!");
 
             return flattened.ToArray();
         }
