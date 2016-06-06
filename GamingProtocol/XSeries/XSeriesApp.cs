@@ -10,12 +10,12 @@ namespace GamingProtocol.XSeries
         private readonly IDecoder _decoder;
         private int MIN_IDENTIFICATION_LENGTH = 2;
         private IOQueue _queue;
-        private int _peekCounter;
+        private int _bufferSize;
         private XProcessorState _state;
 
         public XSeriesApp(IOQueue queue, IDecoder decoder)
         {
-            _peekCounter = 1;
+            _bufferSize = 1;
             _queue = queue;
             _decoder = decoder;
             _state = new XProcessorState();
@@ -23,23 +23,29 @@ namespace GamingProtocol.XSeries
 
         public void Process()
         {
-            if (_state.IsTransactionInProgress)
-            {
-                if (_state.IsReceivePending)
-                    _peekCounter++;
+            _bufferSize = _queue.Input.Size();
+            byte[] chunk = _queue.Input.Peek(_bufferSize);
 
-                return; // Return for now. Add more logic later!
+            if (!_state.IsReceivePending && _bufferSize > 0)
+            {
+                byte[] sob = _queue.Input.Peek(_bufferSize);
+
+                int cutLength = 0;
+
+                for (int i = 0; i < _bufferSize; i++)
+                {
+                    if (sob[i] == 0xFF)
+                        break;
+
+                    _queue.Input.Purge(1);
+                    cutLength = i + 1;
+                }
+
+                _bufferSize -= cutLength;
             }
 
-            byte[] chunk = _queue.Input.Peek(_peekCounter);
-
-            if (!_state.IsReceivePending)
+            if (_bufferSize > 0)
             {
-                byte[] sob = _queue.Input.Peek(1);
-
-                if (sob[0] != 0xFF)
-                    _queue.Input.Purge(1);
-
                 PacketDescriptor descriptor = GetPacketInfo(chunk);
                 _state.UpdateWaitingFor(descriptor);
             }
@@ -50,14 +56,12 @@ namespace GamingProtocol.XSeries
                 _state.SetFreeForFurtherProcessing();
                 return;
             }
-
-            _peekCounter++;
         }
 
         private void ProcessDatablock()
         {
-            byte[] datablock = _queue.Input.Next(_peekCounter);
-            _peekCounter = 1;
+            byte[] datablock = _queue.Input.Next(_bufferSize);
+            _bufferSize = _queue.Input.Size();
 
             Console.WriteLine(_state.PacketIdentifier());
             Console.WriteLine(_decoder.Decode(datablock));
@@ -73,7 +77,7 @@ namespace GamingProtocol.XSeries
             // Good enough implementation for now!
 
             if (data.Length < MIN_IDENTIFICATION_LENGTH)
-                return NullPacketDescriptor();
+                return null;
 
             if (data[1] == 0x00)
             {
@@ -91,19 +95,24 @@ namespace GamingProtocol.XSeries
                     ExpectedLength = 128,
                 };
             }
-            else
-                return NullPacketDescriptor();
-        }
-
-        private PacketDescriptor NullPacketDescriptor()
-        {
-            return new PacketDescriptor()
+            else if (data[1] == 0x10)
             {
-                Identifier = "UNKNOWN",
-                ExpectedLength = 0,
-                ExpectedRxTimeoutMs = 0,
-                ExpectedTxTimeoutMs = 0
-            };
+                return new PacketDescriptor()
+                {
+                    Identifier = "PDB1",
+                    ExpectedLength = 128,
+                };
+            }
+            else if (data[1] == 0x11)
+            {
+                return new PacketDescriptor()
+                {
+                    Identifier = "PDB2",
+                    ExpectedLength = 128,
+                };
+            }
+            else
+                return null;
         }
     }
 }

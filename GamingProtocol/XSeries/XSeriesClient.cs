@@ -23,10 +23,7 @@ namespace GamingProtocol.XSeries
                 // Make method event based. Too much resources used
                 while (true)
                 {
-                    byte[] data = _queue.Output.Next();
-
-                    if (data != null)
-                        Push(data);
+                    // Process output queue
                 }
             });
         }

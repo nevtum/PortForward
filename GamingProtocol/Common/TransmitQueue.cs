@@ -6,59 +6,63 @@ namespace GamingProtocol.Common
 {
     public class TransmitQueue
     {
-        private Queue<byte[]> _queue = new Queue<byte[]>();
+        private Queue<byte> _queue = new Queue<byte>();
+        private Object _lockObj = new Object();
 
         public void Enqueue(byte[] data)
         {
-            _queue.Enqueue(data);
+            lock (_lockObj)
+            {
+                foreach (byte b in data)
+                    _queue.Enqueue(b);
+            }
         }
 
         public byte[] Peek(int nr)
         {
-            List<byte> flattened = new List<byte>();
-
-            foreach (byte[] chunk in _queue.Take(nr).Where(c => c.Length > 0))
-            {
-                flattened.AddRange(chunk);
-            }
-
-            if (flattened.Count == 0)
-                throw new Exception("What's going on!");
-
-            return flattened.ToArray();
+            return _queue.Take(nr).ToArray();
         }
 
         public void Purge(int nr)
         {
-            for (int i = 0; i < nr; i++)
+            lock (_lockObj)
             {
-                Next();
+                for (int i = 0; i < nr; i++)
+                {
+                    Next();
+                }
             }
         }
 
-        public byte[] Next()
+        private byte Next()
         {
             if (_queue.Count > 0)
                 return _queue.Dequeue();
 
-            return null;
+            throw new Exception("Cannot dequeue an empty queue!");
         }
 
         public byte[] Next(int nr)
         {
-            List<byte> data = new List<byte>();
+            byte[] data = new byte[nr];
 
-            for (int i = 0; i < nr; i++)
+            lock (_lockObj)
             {
-                byte[] dequeued = Next();
-                
-                if (dequeued == null)
-                    return data.ToArray();
-
-                data.AddRange(dequeued);
+                for (int i = 0; i < nr; i++)
+                {
+                    data[i] = _queue.Dequeue();
+                }
             }
 
-            return data.ToArray();
+            return data;
+        }
+
+        public int Size()
+        {
+            lock(_lockObj)
+            {
+                return _queue.Count;
+            }
         }
     }
 }

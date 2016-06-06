@@ -24,10 +24,7 @@ namespace GamingProtocol.VLC
             {
                 while(true)
                 {
-                    byte[] data = _queue.Output.Next();
-
-                    if (data != null)
-                        Push(data);
+                    // Process output queue
                 }
             });
 

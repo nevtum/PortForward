@@ -5,7 +5,6 @@ namespace GamingProtocol.XSeries.Domain
     public class ProcessorStateParams
     {
         public bool IsReceivePending { get; private set; }
-        public bool IsTransmissionPending { get; private set; }
         public bool IsIdle { get; private set; }
         public PacketDescriptor WaitFor { get; private set; }
 
@@ -16,7 +15,6 @@ namespace GamingProtocol.XSeries.Domain
                 IsReceivePending = false,
                 IsIdle = true,
                 WaitFor = null,
-                IsTransmissionPending = false,
             };
         }
 
@@ -25,8 +23,7 @@ namespace GamingProtocol.XSeries.Domain
             return new ProcessorStateParams()
             {
                 IsReceivePending = false,
-                IsIdle = !IsTransmissionPending ? true : IsIdle,
-                IsTransmissionPending = IsTransmissionPending,
+                IsIdle = true,
                 WaitFor = null
             };
         }
@@ -36,7 +33,7 @@ namespace GamingProtocol.XSeries.Domain
             if (descriptor == null)
                 throw new ArgumentNullException("Must specify a packet descriptor");
 
-            if (IsReceivePending)
+            if (WaitFor == null && IsReceivePending)
                 if (descriptor.Identifier != WaitFor.Identifier)
                     throw new Exception("Corrupted datablock received");
 
@@ -44,7 +41,6 @@ namespace GamingProtocol.XSeries.Domain
             {
                 IsReceivePending = true,
                 IsIdle = false,
-                IsTransmissionPending = IsTransmissionPending,
                 WaitFor = descriptor
             };
         }

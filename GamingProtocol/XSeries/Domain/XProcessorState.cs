@@ -21,7 +21,7 @@
         public bool IsReadyForProcessing(byte[] data)
         {
             if (_params.WaitFor == null)
-                return true;
+                return false;
 
             return data.Length >= _params.WaitFor.ExpectedLength;
         }
@@ -50,14 +50,6 @@
             get
             {
                 return _params.IsReceivePending;
-            }
-        }
-
-        public bool IsTransactionInProgress
-        {
-            get
-            {
-                return _params.IsTransmissionPending;
             }
         }
     }
