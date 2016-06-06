@@ -28,20 +28,10 @@ namespace GamingProtocol.XSeries
 
             if (!_state.IsReceivePending && _bufferSize > 0)
             {
-                byte[] sob = _queue.Input.Peek(_bufferSize);
+                int trimLength = TrimLength(chunk);
 
-                int cutLength = 0;
-
-                for (int i = 0; i < _bufferSize; i++)
-                {
-                    if (sob[i] == 0xFF)
-                        break;
-
-                    _queue.Input.Purge(1);
-                    cutLength = i + 1;
-                }
-
-                _bufferSize -= cutLength;
+                _queue.Input.Purge(trimLength);
+                _bufferSize -= trimLength;
             }
 
             if (_bufferSize > 0)
@@ -56,6 +46,21 @@ namespace GamingProtocol.XSeries
                 _state.SetFreeForFurtherProcessing();
                 return;
             }
+        }
+
+        private int TrimLength(byte[] chunk)
+        {
+            int trimLength = 0;
+
+            for (int i = 0; i < _bufferSize; i++)
+            {
+                if (chunk[i] == 0xFF)
+                    break;
+
+                trimLength = i + 1;
+            }
+
+            return trimLength;
         }
 
         private void ProcessDatablock()
