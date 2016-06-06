@@ -47,6 +47,7 @@
     <Compile Include="VLC\VLC_Client.cs" />
     <Compile Include="XSeries\Domain\PacketDescriptor.cs" />
     <Compile Include="XSeries\Domain\ProcessorStateParams.cs" />
+    <Compile Include="XSeries\Domain\XDataBlock.cs" />
     <Compile Include="XSeries\Domain\XProcessorState.cs" />
     <Compile Include="XSeries\XSeriesApp.cs" />
     <Compile Include="XSeries\XSeriesClient.cs" />

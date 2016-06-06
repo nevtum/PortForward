@@ -37,12 +37,9 @@
             _params = _params.SetAvailableForNewReads();
         }
 
-        public string PacketIdentifier()
+        public PacketDescriptor WaitingForDescriptor()
         {
-            if (_params.WaitFor != null)
-                return _params.WaitFor.Identifier;
-
-            return "UNKNOWN";
+            return _params.WaitFor;
         }
 
         public bool IsReceivePending

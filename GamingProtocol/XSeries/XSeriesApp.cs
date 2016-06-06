@@ -29,16 +29,16 @@ namespace GamingProtocol.XSeries
             if (!_state.IsReceivePending && _bufferSize > 0)
             {
                 int trimLength = TrimLength(chunk);
-
                 _queue.Input.Purge(trimLength);
                 _bufferSize -= trimLength;
+                // chunk becomes stale at this point
             }
 
-            if (_bufferSize > 0)
-            {
-                PacketDescriptor descriptor = GetPacketInfo(chunk);
-                _state.UpdateWaitingFor(descriptor);
-            }
+            if (_bufferSize <= 0)
+                return;
+
+            PacketDescriptor descriptor = GetPacketInfo(chunk);
+            _state.UpdateWaitingFor(descriptor);
 
             if (_state.IsReadyForProcessing(chunk))
             {
@@ -65,11 +65,13 @@ namespace GamingProtocol.XSeries
 
         private void ProcessDatablock()
         {
-            byte[] datablock = _queue.Input.Next(_bufferSize);
+            byte[] data = _queue.Input.Next(_bufferSize);
             _bufferSize = _queue.Input.Size();
 
-            Console.WriteLine(_state.PacketIdentifier());
-            Console.WriteLine(_decoder.Decode(datablock));
+            Console.WriteLine(_state.WaitingForDescriptor().Identifier);
+            Console.WriteLine(_decoder.Decode(data));
+
+            XDataBlock datablock = new XDataBlock(_state.WaitingForDescriptor(), data);
 
             // TODO
             // Validate datablock with CRC check

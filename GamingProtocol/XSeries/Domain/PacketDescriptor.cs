@@ -6,5 +6,10 @@
         public int ExpectedLength { get; set; }
         public int ExpectedRxTimeoutMs { get; set; }
         public int ExpectedTxTimeoutMs { get; set; }
+
+        public override string ToString()
+        {
+            return Identifier;
+        }
     }
 }
