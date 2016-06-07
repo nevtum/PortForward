@@ -68,16 +68,29 @@ namespace GamingProtocol.XSeries
             byte[] data = _queue.Input.Next(_bufferSize);
             _bufferSize = _queue.Input.Size();
 
-            Console.WriteLine(_state.WaitingForDescriptor().Identifier);
-            Console.WriteLine(_decoder.Decode(data));
-
             XDataBlock datablock = new XDataBlock(_state.WaitingForDescriptor(), data);
-            Console.WriteLine("ValidCRC: {0}", datablock.IsValidCRC());
+            Console.WriteLine("Class: {0}, ValidCRC: {1}", datablock.Class(), datablock.IsValidCRC());
+            Console.WriteLine(_decoder.Decode(data));
+            Console.WriteLine();
+
+            if (!datablock.IsValidCRC())
+                return;
+
+            string dbClass = datablock.Class().Identifier;
+            if (dbClass == "SDB")
+            {
+                Console.WriteLine("PROGRAMID1: {0}", datablock.GetASCII(88, 95));
+                Console.WriteLine("PROGRAMID2: {0}", datablock.GetASCII(96, 103));
+                Console.WriteLine("PROGRAMID3: {0}", datablock.GetASCII(104, 111));
+                Console.WriteLine("PROGRAMID4: {0}", datablock.GetASCII(112, 119));
+            }
+            else if (dbClass == "MDB")
+            {
+
+            }
 
             // TODO
-            // Validate datablock with CRC check
             // Publish event datablock received
-            // Wrap bytes in a datablock value object
         }
 
         private PacketDescriptor GetPacketInfo(byte[] data)

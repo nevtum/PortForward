@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.Linq;
 
 namespace GamingProtocol.XSeries.Domain
 {
@@ -15,6 +17,36 @@ namespace GamingProtocol.XSeries.Domain
             _data = data;
             _validCRC = false;
             Validate();
+        }
+
+        public PacketDescriptor Class()
+        {
+            return _descriptor;
+        }
+
+        public string GetASCII(int startindex, int endindex)
+        {
+            System.Diagnostics.Debug.Assert(startindex < endindex);
+            System.Diagnostics.Debug.Assert(startindex > 0);
+            System.Diagnostics.Debug.Assert(startindex < _descriptor.ExpectedLength);
+            System.Diagnostics.Debug.Assert(endindex > 0);
+            System.Diagnostics.Debug.Assert(endindex < _descriptor.ExpectedLength);
+
+            if (!_validCRC)
+                return "INVALID CRC";
+
+            byte[] array = _data
+                .Skip(startindex - 1)
+                .Take(endindex - (startindex - 1))
+                .ToArray();
+
+            string text = System.Text.Encoding.ASCII.GetString(array);
+
+            StringBuilder builder = new StringBuilder();
+            foreach (char c in text.Reverse())
+                builder.Append(c);
+
+            return builder.ToString();
         }
 
         public bool IsValidCRC()
