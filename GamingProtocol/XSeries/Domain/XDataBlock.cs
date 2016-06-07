@@ -24,13 +24,21 @@ namespace GamingProtocol.XSeries.Domain
             return _descriptor;
         }
 
+        public bool GetBit(int byteindex, int bitindex)
+        {
+            System.Diagnostics.Debug.Assert(byteindex > 0);
+            System.Diagnostics.Debug.Assert(bitindex >= 0);
+            System.Diagnostics.Debug.Assert(byteindex < _descriptor.ExpectedLength);
+            System.Diagnostics.Debug.Assert(bitindex < 8);
+
+            byte data = _data[byteindex - 1];
+
+            return (data & (1 << bitindex)) != 0;
+        }
+
         public string GetASCII(int startindex, int endindex)
         {
-            System.Diagnostics.Debug.Assert(startindex < endindex);
-            System.Diagnostics.Debug.Assert(startindex > 0);
-            System.Diagnostics.Debug.Assert(startindex < _descriptor.ExpectedLength);
-            System.Diagnostics.Debug.Assert(endindex > 0);
-            System.Diagnostics.Debug.Assert(endindex < _descriptor.ExpectedLength);
+            AssertRange(startindex, endindex);
 
             if (!_validCRC)
                 return "INVALID CRC";
@@ -46,11 +54,7 @@ namespace GamingProtocol.XSeries.Domain
 
         public decimal GetBCD(int startindex, int endindex)
         {
-            System.Diagnostics.Debug.Assert(startindex < endindex);
-            System.Diagnostics.Debug.Assert(startindex > 0);
-            System.Diagnostics.Debug.Assert(startindex < _descriptor.ExpectedLength);
-            System.Diagnostics.Debug.Assert(endindex > 0);
-            System.Diagnostics.Debug.Assert(endindex < _descriptor.ExpectedLength);
+            AssertRange(startindex, endindex);
 
             if (!_validCRC)
                 return -1;
@@ -80,6 +84,15 @@ namespace GamingProtocol.XSeries.Domain
         public bool IsValidCRC()
         {
             return _validCRC;
+        }
+
+        private void AssertRange(int startindex, int endindex)
+        {
+            System.Diagnostics.Debug.Assert(startindex <= endindex);
+            System.Diagnostics.Debug.Assert(startindex > 0);
+            System.Diagnostics.Debug.Assert(startindex < _descriptor.ExpectedLength);
+            System.Diagnostics.Debug.Assert(endindex > 0);
+            System.Diagnostics.Debug.Assert(endindex < _descriptor.ExpectedLength);
         }
 
         private void Validate()

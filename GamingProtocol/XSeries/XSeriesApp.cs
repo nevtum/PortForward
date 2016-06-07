@@ -79,6 +79,12 @@ namespace GamingProtocol.XSeries
             string dbClass = datablock.Class().Identifier;
             if (dbClass == "SDB")
             {
+                Console.WriteLine("SEQ #: {0}", datablock.GetBCD(5, 5));
+                Console.WriteLine("AUDIT MODE: {0}", datablock.GetBit(12, 0));
+                Console.WriteLine("TEST MODE: {0}", datablock.GetBit(12, 1));
+                Console.WriteLine("POWER SAVE: {0}", datablock.GetBit(12, 2));
+                Console.WriteLine("SUBS EQ SUSPENDED: {0}", datablock.GetBit(12, 3));
+                Console.WriteLine("CREDIT METER: {0}", datablock.GetBCD(62, 66));
                 Console.WriteLine("POWER UP: {0}", datablock.GetBCD(72, 75));
                 Console.WriteLine("PROGRAMID1: {0}", datablock.GetASCII(88, 95));
                 Console.WriteLine("PROGRAMID2: {0}", datablock.GetASCII(96, 103));
