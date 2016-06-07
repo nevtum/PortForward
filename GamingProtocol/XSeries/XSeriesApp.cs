@@ -72,6 +72,7 @@ namespace GamingProtocol.XSeries
             Console.WriteLine(_decoder.Decode(data));
 
             XDataBlock datablock = new XDataBlock(_state.WaitingForDescriptor(), data);
+            Console.WriteLine("ValidCRC: {0}", datablock.IsValidCRC());
 
             // TODO
             // Validate datablock with CRC check

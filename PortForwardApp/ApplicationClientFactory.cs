@@ -59,7 +59,7 @@ namespace PortForwardApp
 
             //ILogger logger = new FakeLogger();
             //ILogger logger = new SilentLogger();
-            ILogger logger = new TextFileLogger("serial_log.txt");
+            ILogger logger = new TextFileLogger("serial_log.txt", new FakeLogger());
 
             return new SerialClient(socket, settings, decoder, logger);
         }

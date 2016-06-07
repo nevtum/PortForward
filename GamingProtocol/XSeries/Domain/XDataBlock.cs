@@ -38,18 +38,17 @@ namespace GamingProtocol.XSeries.Domain
 
         private byte[] CalculateCRC(byte[] data)
         {
-            // Incorrect implementation!!
-
-            int mod = 0xff;
-            for (int i = 1; i < 127; i++)
+            int mod = 0x00;
+            for (int i = 1; i < _descriptor.ExpectedLength - 2; i++)
             {
                 mod = mod ^ data[i];
+                //Console.WriteLine("{0:X2} => {1:X2}", x, mod);
             }
 
             int upper = mod & 0xF0;
             int lower = mod & 0x0F;
 
-            return new byte[] { (byte)upper, (byte)lower };
+            return new byte[] { (byte)lower, (byte)upper };
         }
     }
 }
