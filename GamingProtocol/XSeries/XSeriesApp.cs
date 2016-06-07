@@ -83,6 +83,7 @@ namespace GamingProtocol.XSeries
                 Console.WriteLine("PROGRAMID2: {0}", datablock.GetASCII(96, 103));
                 Console.WriteLine("PROGRAMID3: {0}", datablock.GetASCII(104, 111));
                 Console.WriteLine("PROGRAMID4: {0}", datablock.GetASCII(112, 119));
+                Console.WriteLine("PRTP: {0}%", datablock.GetPercent(120, 121));
             }
             else if (dbClass == "MDB")
             {

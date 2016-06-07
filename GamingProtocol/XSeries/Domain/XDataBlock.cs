@@ -38,15 +38,38 @@ namespace GamingProtocol.XSeries.Domain
             byte[] array = _data
                 .Skip(startindex - 1)
                 .Take(endindex - (startindex - 1))
+                .Reverse()
                 .ToArray();
 
-            string text = System.Text.Encoding.ASCII.GetString(array);
+            return System.Text.Encoding.ASCII.GetString(array);
+        }
 
-            StringBuilder builder = new StringBuilder();
-            foreach (char c in text.Reverse())
-                builder.Append(c);
+        public decimal GetPercent(int startindex, int endindex)
+        {
+            System.Diagnostics.Debug.Assert(startindex < endindex);
+            System.Diagnostics.Debug.Assert(startindex > 0);
+            System.Diagnostics.Debug.Assert(startindex < _descriptor.ExpectedLength);
+            System.Diagnostics.Debug.Assert(endindex > 0);
+            System.Diagnostics.Debug.Assert(endindex < _descriptor.ExpectedLength);
 
-            return builder.ToString();
+            if (!_validCRC)
+                return -1;
+
+            byte[] array = _data
+                .Skip(startindex - 1)
+                .Take(endindex - (startindex - 1))
+                .Reverse()
+                .ToArray();
+
+            decimal result = 0;
+            foreach (byte bcd in array)
+            {
+                result *= 100;
+                result += (10 * (bcd >> 4));
+                result += bcd & 0xf;
+            }
+
+            return decimal.Divide(result , 100);
         }
 
         public bool IsValidCRC()
