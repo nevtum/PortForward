@@ -79,6 +79,7 @@ namespace GamingProtocol.XSeries
             string dbClass = datablock.Class().Identifier;
             if (dbClass == "SDB")
             {
+                Console.WriteLine("POWER UP: {0}", datablock.GetBCD(72, 75));
                 Console.WriteLine("PROGRAMID1: {0}", datablock.GetASCII(88, 95));
                 Console.WriteLine("PROGRAMID2: {0}", datablock.GetASCII(96, 103));
                 Console.WriteLine("PROGRAMID3: {0}", datablock.GetASCII(104, 111));

@@ -44,7 +44,7 @@ namespace GamingProtocol.XSeries.Domain
             return System.Text.Encoding.ASCII.GetString(array);
         }
 
-        public decimal GetPercent(int startindex, int endindex)
+        public decimal GetBCD(int startindex, int endindex)
         {
             System.Diagnostics.Debug.Assert(startindex < endindex);
             System.Diagnostics.Debug.Assert(startindex > 0);
@@ -69,7 +69,12 @@ namespace GamingProtocol.XSeries.Domain
                 result += bcd & 0xf;
             }
 
-            return decimal.Divide(result , 100);
+            return result;
+        }
+
+        public decimal GetPercent(int startindex, int endindex)
+        {
+            return decimal.Divide(GetBCD(startindex, endindex), 100);
         }
 
         public bool IsValidCRC()
