@@ -1,5 +1,6 @@
 ﻿using Distributed;
 using PortForward;
+using PortForward.Builders;
 using PortForward.Utilities.Decoding;
 using PortForwardApp.Logging;
 using System;
@@ -16,14 +17,13 @@ namespace PortForwardApp
 
         public static Client ConsoleClient(Socket socket)
         {
-            IDecoder decoder = new RawByteDecoder();
-            //IDecoder decoder = new AsciiDecoder();
-
-            //ILogger logger = new FakeLogger();
-            //ILogger logger = new SilentLogger();
-            ILogger logger = new TextFileLogger("log.txt", new FakeLogger());
-
-            return new ConsoleClient(socket, decoder, logger);
+            return ClientBuilder
+                .UsingConsoleClient(socket)
+                .WithDecoder(new RawByteDecoder())
+                //.WithDecoder(new AsciiDecoder())
+                //.WithLogger(new FakeLogger())
+                .WithLogger(new TextFileLogger("log.txt", new FakeLogger()))
+                .Build();
         }
 
         public static Client MessageQueueClient(Socket socket)
@@ -45,23 +45,21 @@ namespace PortForwardApp
             Console.WriteLine("Please enter COM port nr: ");
             int comPort = int.Parse(Console.ReadLine());
 
-            SerialSettings settings = new SerialSettings()
-            {
-                BaudRate = 9600,
-                PortName = string.Format("COM{0}", comPort),
-                Parity = System.IO.Ports.Parity.None,
-                StopBits = System.IO.Ports.StopBits.One,
-                DataBits = 8
-            };
-
-            IDecoder decoder = new RawByteDecoder();
-            //IDecoder decoder = new AsciiDecoder();
-
-            //ILogger logger = new FakeLogger();
-            //ILogger logger = new SilentLogger();
-            ILogger logger = new TextFileLogger("serial_log.txt", new FakeLogger());
-
-            return new SerialClient(socket, settings, decoder, logger);
+            return ClientBuilder
+                .UsingSerialClient(socket)
+                .WithSettings(new SerialSettings()
+                {
+                    BaudRate = 9600,
+                    PortName = string.Format("COM{0}", comPort),
+                    Parity = System.IO.Ports.Parity.None,
+                    StopBits = System.IO.Ports.StopBits.One,
+                    DataBits = 8
+                })
+                .WithDecoder(new RawByteDecoder())
+                //.WithDecoder(new AsciiDecoder())
+                //.WithLogger(new FakeLogger())
+                .WithLogger(new TextFileLogger("serial_log.txt", new FakeLogger()))
+                .Build();
         }
 
         private static string GetLocalIPAddress()
