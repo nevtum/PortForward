@@ -1,11 +1,12 @@
 ﻿using PortForward.Utilities.Decoding;
 using PortForwardApp.Logging;
+using System;
 
 namespace PortForward.Builders
 {
     public interface ISetSerialSettings
     {
-        ISetDecoder WithSettings(SerialSettings settings);
+        ISetDecoder WithSettings(Func<SerialSettings> settingsFactory);
     }
 
     public interface ISetDecoder

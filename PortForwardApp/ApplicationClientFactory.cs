@@ -45,16 +45,19 @@ namespace PortForwardApp
             Console.WriteLine("Please enter COM port nr: ");
             int comPort = int.Parse(Console.ReadLine());
 
+            Func<SerialSettings> settingsFactory = () =>
+            new SerialSettings()
+            {
+                BaudRate = 9600,
+                PortName = string.Format("COM{0}", comPort),
+                Parity = System.IO.Ports.Parity.None,
+                StopBits = System.IO.Ports.StopBits.One,
+                DataBits = 8
+            };
+
             return ClientBuilder
                 .UsingSerialClient(socket)
-                .WithSettings(new SerialSettings()
-                {
-                    BaudRate = 9600,
-                    PortName = string.Format("COM{0}", comPort),
-                    Parity = System.IO.Ports.Parity.None,
-                    StopBits = System.IO.Ports.StopBits.One,
-                    DataBits = 8
-                })
+                .WithSettings(settingsFactory)
                 .WithDecoder(new RawByteDecoder())
                 //.WithDecoder(new AsciiDecoder())
                 //.WithLogger(new FakeLogger())

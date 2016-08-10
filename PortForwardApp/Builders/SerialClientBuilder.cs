@@ -1,11 +1,12 @@
 ﻿using PortForward.Utilities.Decoding;
 using PortForwardApp.Logging;
+using System;
 
 namespace PortForward.Builders
 {
     public class SerialClientBuilder : ISetSerialSettings, ISetLoggerOrBuildClient, IBuildClient, ISetDecoder
     {
-        private SerialSettings _settings;
+        private Func<SerialSettings> _settingsFactory;
         private ILogger _logger = new SilentLogger();
         private IDecoder _decoder;
         private Socket _socket;
@@ -15,9 +16,9 @@ namespace PortForward.Builders
             _socket = socket;
         }
 
-        public ISetDecoder WithSettings(SerialSettings settings)
+        public ISetDecoder WithSettings(Func<SerialSettings> settingsFactory)
         {
-            _settings = settings;
+            _settingsFactory = settingsFactory;
             return this;
         }
 
@@ -35,7 +36,7 @@ namespace PortForward.Builders
 
         public Client Build()
         {
-            return new SerialClient(_socket, _settings, _decoder, _logger);
+            return new SerialClient(_socket, _settingsFactory(), _decoder, _logger);
         }
     }
 }
