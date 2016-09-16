@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationClientFactory.cs" />
+    <Compile Include="ConcreteClients\BetterSerialClient.cs" />
     <Compile Include="ConcreteClients\ConsoleClient.cs" />
     <Compile Include="ConcreteClients\EchoClient.cs" />
     <Compile Include="ConcreteClients\SerialSettings.cs" />
