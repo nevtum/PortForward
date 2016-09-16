@@ -56,8 +56,8 @@ namespace PortForward
                 }
                 catch (Exception e)
                 {
-                    _logger.Log("Uh oh! Some async method went wrong!");
-                    _logger.Log(e.Message);
+                    _logger.Error("Uh oh! Some async method went wrong!");
+                    _logger.Error(e.Message);
                 }
 
                 // start a new read handle after success or fail

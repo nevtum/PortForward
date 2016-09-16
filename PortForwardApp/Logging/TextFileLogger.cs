@@ -23,5 +23,17 @@ namespace PortForwardApp.Logging
             if (_inner != null)
                 _inner.Log(message, args);
         }
+
+        public void Error(string message, params object[] args)
+        {
+            using (StreamWriter w = File.AppendText(_filename))
+            {
+                w.WriteLine("** ERROR **");
+                w.WriteLine(message, args);
+            }
+
+            if (_inner != null)
+                _inner.Log(message, args);
+        }
     }
 }

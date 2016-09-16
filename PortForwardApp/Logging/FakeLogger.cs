@@ -11,5 +11,12 @@ namespace PortForwardApp.Logging
         {
             Console.WriteLine(message, args);
         }
+
+        public void Error(string message, params object[] args)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.WriteLine(message, args);
+            Console.ResetColor();
+        }
     }
 }
