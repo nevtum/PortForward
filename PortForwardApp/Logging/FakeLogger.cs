@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using PortForward.Utilities;
+using System;
 
 namespace PortForwardApp.Logging
 {
     public class FakeLogger : ILogger
     {
-        public void Log(string header, DateTime datetime, string data)
+        public void Log(string message, params object[] args)
         {
-            Console.WriteLine("[{0}] {1}: {2}", header, datetime, data);
+            Console.WriteLine(message, args);
         }
+
+        public void Error(string message, params object[] args)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.WriteLine(message, args);
+            Console.ResetColor();
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using PortForward.Utilities.Decoding;
+﻿using PortForward.Utilities;
+using PortForward.Utilities.Decoding;
 using PortForwardApp.Logging;
 using System;
 

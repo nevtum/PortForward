@@ -43,12 +43,12 @@
     <Compile Include="Builders\ConsoleClientBuilder.cs" />
     <Compile Include="Builders\Interfaces.cs" />
     <Compile Include="Builders\SerialClientBuilder.cs" />
+    <Compile Include="ConcreteClients\BetterSerialClient.cs" />
     <Compile Include="ConcreteClients\ConsoleClient.cs" />
     <Compile Include="ConcreteClients\EchoClient.cs" />
     <Compile Include="ConcreteClients\SerialSettings.cs" />
     <Compile Include="ConcreteClients\SerialClient.cs" />
     <Compile Include="Logging\FakeLogger.cs" />
-    <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\SilentLogger.cs" />
     <Compile Include="Logging\TextFileLogger.cs" />
     <Compile Include="Program.cs" />

@@ -1,6 +1,6 @@
-﻿using PortForward.Utilities.Decoding;
-using PortForwardApp.Logging;
+using PortForward.Utilities.Decoding;
 using System;
+using PortForward.Utilities;
 
 namespace PortForward
 {

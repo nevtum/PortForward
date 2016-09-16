@@ -1,6 +1,7 @@
 ﻿using Distributed;
 using PortForward;
 using PortForward.Builders;
+using PortForward.Utilities;
 using PortForward.Utilities.Decoding;
 using PortForwardApp.Logging;
 using System;
@@ -37,7 +38,7 @@ namespace PortForwardApp
                 address = Console.ReadLine();
             }
 
-            return new ZMQClient(address, socket);
+            return new ZMQClient(address, socket, new FakeLogger());
         }
 
         public static Client SerialClient(Socket socket)

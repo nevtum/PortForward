@@ -1,10 +1,15 @@
-﻿using System;
+﻿using PortForward.Utilities;
 
 namespace PortForwardApp.Logging
 {
     public class SilentLogger : ILogger
     {
-        public void Log(string header, DateTime datetime, string data)
+        public void Log(string message, params object[] args)
+        {
+            // Do nothing
+        }
+
+        public void Error(string message, params object[] args)
         {
             // Do nothing
         }
