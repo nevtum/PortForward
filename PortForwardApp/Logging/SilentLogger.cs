@@ -1,4 +1,4 @@
-﻿using System;
+﻿using PortForward.Utilities;
 
 namespace PortForwardApp.Logging
 {

@@ -1,5 +1,6 @@
 ﻿using Distributed;
 using PortForward;
+using PortForward.Utilities;
 using PortForward.Utilities.Decoding;
 using PortForwardApp.Logging;
 using System;

@@ -1,4 +1,4 @@
-﻿namespace PortForwardApp.Logging
+﻿namespace PortForward.Utilities
 {
     public interface ILogger
     {

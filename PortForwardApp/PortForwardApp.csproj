@@ -45,7 +45,6 @@
     <Compile Include="ConcreteClients\SerialSettings.cs" />
     <Compile Include="ConcreteClients\SerialClient.cs" />
     <Compile Include="Logging\FakeLogger.cs" />
-    <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\SilentLogger.cs" />
     <Compile Include="Logging\TextFileLogger.cs" />
     <Compile Include="Program.cs" />

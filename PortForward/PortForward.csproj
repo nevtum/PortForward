@@ -52,6 +52,7 @@
     <Compile Include="Utilities\Decoding\AsciiDecoder.cs" />
     <Compile Include="Utilities\Decoding\IDecoder.cs" />
     <Compile Include="Utilities\Decoding\RawByteDecoder.cs" />
+    <Compile Include="Utilities\ILogger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
