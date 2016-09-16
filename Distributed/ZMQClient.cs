@@ -1,5 +1,6 @@
 ﻿using NetMQ;
 using PortForward;
+using PortForward.Utilities;
 using System;
 using System.Threading.Tasks;
 
@@ -10,12 +11,14 @@ namespace Distributed
         private NetMQContext _context;
         private NetMQSocket _pubSocket;
         private NetMQSocket _subSocket;
+        private ILogger _logger;
         private string _topic = "";
         private string _remote;
 
-        public ZMQClient(string publisherAddress, Socket socket)
+        public ZMQClient(string publisherAddress, Socket socket, ILogger logger)
             : base(socket)
         {
+            _logger = logger;
             _remote = string.Format("tcp://{0}:4040", publisherAddress);
 
             _context = NetMQContext.Create();
@@ -56,8 +59,8 @@ namespace Distributed
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Could not connect to remote publisher!");
-                    Console.WriteLine("Trying to re-connect in {0}s", reconnectDelay);
+                    _logger.Error("Could not connect to remote publisher!");
+                    _logger.Error("Trying to re-connect in {0}s", reconnectDelay);
                     System.Threading.Thread.Sleep(reconnectDelay * 1000);
 
                     reconnectDelay *= 2;
