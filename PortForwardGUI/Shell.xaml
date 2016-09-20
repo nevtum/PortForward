@@ -1,0 +1,21 @@
+﻿<Window x:Class="PortForwardGUI.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PortForwardGUI"
+        xmlns:logging="clr-namespace:PortForwardGUI.Logging.Views"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Top"
+                        VerticalAlignment="Top" >
+                <Button Content="Start Logging" Margin="2"/>
+                <Button Content="Stop Logging" Margin="2"/>
+            </StackPanel>
+            <logging:Master Margin="2" />
+        </DockPanel>
+    </Grid>
+</Window>
