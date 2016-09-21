@@ -20,7 +20,7 @@
             <RadioButton VerticalAlignment="Center">Show incoming data</RadioButton>
             <RadioButton VerticalAlignment="Center">Show outgoing data</RadioButton>
         </UniformGrid>
-        <ListView Name="_myListView" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ListView ItemsSource="{Binding Items}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
