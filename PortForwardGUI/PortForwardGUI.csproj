@@ -70,6 +70,8 @@
     <Compile Include="Logging\DataFlow.cs" />
     <Compile Include="Logging\LoggedItem.cs" />
     <Compile Include="Logging\LoggedItemId.cs" />
+    <Compile Include="Logging\Views\BytesToHexStringConverter.cs" />
+    <Compile Include="Logging\Views\DirectionToColourConverter.cs" />
     <Compile Include="Logging\Views\Master.xaml.cs">
       <DependentUpon>Master.xaml</DependentUpon>
     </Compile>

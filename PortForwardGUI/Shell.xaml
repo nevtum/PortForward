@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PortForwardGUI"
         xmlns:logging="clr-namespace:PortForwardGUI.Logging.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="PortForward Data Logger v0.1" Height="350" Width="525">
     <Grid>
         <DockPanel>
             <StackPanel Orientation="Horizontal"
@@ -15,6 +15,9 @@
                 <Button Content="Start Logging" Margin="2"/>
                 <Button Content="Stop Logging" Margin="2"/>
             </StackPanel>
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem>Ready</StatusBarItem>
+            </StatusBar>
             <logging:Master Margin="2" />
         </DockPanel>
     </Grid>
