@@ -13,10 +13,10 @@ namespace PortForwardGUI.Logging.Views
             InitializeComponent();
 
             ObservableCollection<LoggedItem> items = new ObservableCollection<LoggedItem>();
-            items.Add(LoggedItem.IncomingData(new byte[] { 0x1, 0x2, 0x3 }));
-            items.Add(LoggedItem.IncomingData(new byte[] { 0x1, 0x2, 0x3 }));
-            items.Add(LoggedItem.IncomingData(new byte[] { 0x1, 0x2, 0x3 }));
-            items.Add(LoggedItem.IncomingData(new byte[] { 0x1, 0x2, 0x3 }));
+            items.Add(LoggedItem.IncomingData(1, new byte[] { 0x1, 0x2, 0x3 }));
+            items.Add(LoggedItem.IncomingData(2, new byte[] { 0x1, 0x2, 0x3 }));
+            items.Add(LoggedItem.OutgoingData(3, new byte[] { 0x1, 0x2, 0x3 }));
+            items.Add(LoggedItem.IncomingData(4, new byte[] { 0x1, 0x2, 0x3 }));
 
             _mydatagrid.ItemsSource = items;
         }

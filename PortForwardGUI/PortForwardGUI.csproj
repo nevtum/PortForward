@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Logging\DataFlow.cs" />
     <Compile Include="Logging\LoggedItem.cs" />
+    <Compile Include="Logging\LoggedItemId.cs" />
     <Compile Include="Logging\Views\Master.xaml.cs">
       <DependentUpon>Master.xaml</DependentUpon>
     </Compile>
