@@ -9,18 +9,38 @@
     <UserControl.Resources>
         <local:DirectionToColourConverter x:Key="colourConverter"></local:DirectionToColourConverter>
         <local:BytesToHexStringConverter x:Key="dataConverter"></local:BytesToHexStringConverter>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="Margin" Value="2, 0, 12, 0" />
+        </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="2, 4, 0, 4" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="23" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="1, 0, 0, 0" />
+            <Setter Property="Height" Value="23" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
 
 
     <DockPanel>
-        <UniformGrid DockPanel.Dock="Top"
-                   Margin="0, 0, 0, 2"
-                   HorizontalAlignment="Stretch" Rows="1">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top"
+                   HorizontalAlignment="Stretch">
             <RadioButton VerticalAlignment="Center" IsChecked="True">Show all traffic</RadioButton>
             <RadioButton VerticalAlignment="Center">Show incoming data</RadioButton>
             <RadioButton VerticalAlignment="Center">Show outgoing data</RadioButton>
-        </UniformGrid>
-        <ListView ItemsSource="{Binding Items}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Label Content="Filter expression:" />
+            <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" Width="150"/>
+            <Button Command="{Binding ClearQueryCommand}" HorizontalContentAlignment="Right" Content="Clear" />
+        </StackPanel>
+        <ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
