@@ -85,12 +85,14 @@
     </Compile>
     <Compile Include="Core\DataTransmitted.cs" />
     <Compile Include="Logging\DataFlow.cs" />
+    <Compile Include="Logging\FilterOptions.cs" />
     <Compile Include="Logging\LoggedItem.cs" />
     <Compile Include="Logging\LoggedItemId.cs" />
     <Compile Include="Core\DataRecieved.cs" />
     <Compile Include="Logging\ViewModels\LogControlViewModel.cs" />
     <Compile Include="Logging\Views\BytesToHexStringConverter.cs" />
     <Compile Include="Logging\Views\DirectionToColourConverter.cs" />
+    <Compile Include="Logging\Views\EnumToBoolConverter.cs" />
     <Compile Include="Logging\Views\Master.xaml.cs">
       <DependentUpon>Master.xaml</DependentUpon>
     </Compile>

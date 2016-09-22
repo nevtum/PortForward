@@ -18,6 +18,7 @@ namespace PortForwardGUI.Logging.ViewModels
         //private SubscriptionToken _dataTransmittedToken;
         private string _query;
         private LoggedItem _selectedItem;
+        private FilterOptions _filterOption;
 
         //public LogControlViewModel(IEventAggregator eventAggregator)
         public LogControlViewModel()
@@ -30,7 +31,6 @@ namespace PortForwardGUI.Logging.ViewModels
 
             _items = new ObservableCollection<LoggedItem>();
             _filtered = CollectionViewSource.GetDefaultView(_items);
-            RemoveFilters();
 
             _query = string.Empty;
         }
@@ -40,6 +40,20 @@ namespace PortForwardGUI.Logging.ViewModels
             get
             {
                 return _filtered;
+            }
+        }
+
+        public FilterOptions FilterType
+        {
+            get
+            {
+                return _filterOption;
+            }
+            set
+            {
+                _filterOption = value;
+                OnPropertyChanged(() => FilterType);
+                ApplyFilter(_filterOption);
             }
         }
 
@@ -117,14 +131,16 @@ namespace PortForwardGUI.Logging.ViewModels
             _items.Insert(0, LoggedItem.OutgoingData(payload.Item1, payload.Item2));
         }
 
-        private void ApplyFilter(DataFlow direction)
+        private void ApplyFilter(FilterOptions options)
         {
-            _filtered.Filter = (obj) => ((LoggedItem)obj).Direction == direction;
-        }
-
-        private void RemoveFilters()
-        {
-            _filtered.Filter = (o) => true;
+            if (options == FilterOptions.All)
+                _filtered.Filter = (obj) => true;
+            else if (options == FilterOptions.Incoming)
+                _filtered.Filter = (obj) => ((LoggedItem)obj).Direction == DataFlow.Incoming;
+            else if (options == FilterOptions.Outgoing)
+                _filtered.Filter = (obj) => ((LoggedItem)obj).Direction == DataFlow.Outgoing;
+            else
+                throw new ArgumentException("Unknown Filter Type");
         }
 
         public void Dispose()

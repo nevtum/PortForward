@@ -9,6 +9,7 @@
     <UserControl.Resources>
         <local:DirectionToColourConverter x:Key="colourConverter"></local:DirectionToColourConverter>
         <local:BytesToHexStringConverter x:Key="dataConverter"></local:BytesToHexStringConverter>
+        <local:EnumToBoolConverter x:Key="enumConverter"></local:EnumToBoolConverter>
 
         <Style TargetType="RadioButton">
             <Setter Property="Margin" Value="2, 0, 12, 0" />
@@ -31,9 +32,18 @@
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top"
                    HorizontalAlignment="Stretch">
-            <RadioButton VerticalAlignment="Center" IsChecked="True">Show all traffic</RadioButton>
+            <!--<RadioButton VerticalAlignment="Center" IsChecked="True">Show all traffic</RadioButton>
             <RadioButton VerticalAlignment="Center">Show incoming data</RadioButton>
-            <RadioButton VerticalAlignment="Center">Show outgoing data</RadioButton>
+            <RadioButton VerticalAlignment="Center">Show outgoing data</RadioButton>-->
+            <RadioButton Content="Show all traffic" GroupName="Options1" 
+                                         IsChecked="{Binding Path=FilterType, Mode=TwoWay,
+                                         Converter={StaticResource enumConverter}, ConverterParameter=All}" />
+            <RadioButton Content="Show incoming data" GroupName="Options1" 
+                                         IsChecked="{Binding Path=FilterType, Mode=TwoWay,
+                                         Converter={StaticResource enumConverter}, ConverterParameter=Incoming}"  />
+            <RadioButton Content="Show outgoing data" GroupName="Options1" 
+                                         IsChecked="{Binding Path=FilterType, Mode=TwoWay,
+                                         Converter={StaticResource enumConverter}, ConverterParameter=Outgoing}"  />
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Label Content="Filter expression:" />
